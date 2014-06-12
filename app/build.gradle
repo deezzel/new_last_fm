@@ -1,0 +1,101 @@
+buildscript{
+    repositories{
+        mavenCentral()
+    }
+    dependencies {
+        classpath 'com.android.tools.build:gradle:0.11.+'
+        classpath 'com.neenbedankt.gradle.plugins:android-apt:1.1'
+    }
+}
+
+apply plugin: 'android'
+apply plugin: 'android-apt'
+ext.AAVersion = '3.0.1'
+ext.daggerVersion = '1.0.0';
+
+configurations {
+    apt
+    androidannotations
+    androidannotations.extendsFrom(compile)
+}
+configurations.compile {
+    exclude module: 'spring-core'
+    exclude module: 'spring-web'
+    exclude module: 'commons-logging'
+}
+repositories{
+    mavenCentral()
+}
+
+android {
+    compileSdkVersion 19
+    buildToolsVersion "19.1.0"
+
+    defaultConfig {
+        applicationId "com.newlastfm.app"
+        minSdkVersion 14
+        targetSdkVersion 19
+        versionCode 1
+        versionName "1.0"
+    }
+    buildTypes {
+        release {
+            runProguard false
+            proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
+        }
+    }
+    sourceSets {
+        main {
+            manifest.srcFile 'src/main/AndroidManifest.xml'
+            java.srcDirs = ['src/main/java']
+            resources.srcDirs = ['src/main/res']
+        }
+    }
+
+    applicationVariants.all { variant ->
+        //  println "create folder for androidannotations:  ${aptOutput}"
+        aptOutput = file("${project.buildDir}/source/apt_generated/${variant.dirName}")
+        android.sourceSets[getSourceSetName(variant)].java.srcDirs += aptOutput.getPath()
+        variant.javaCompile.doFirst {
+            aptOutput.mkdirs()
+            variant.javaCompile.classpath += configurations.androidannotations
+            variant.javaCompile.options.compilerArgs += [
+                    '-processor', 'org.androidannotations.AndroidAnnotationProcessor',
+                    '-AandroidManifestFile=' + variant.processResources.manifestFile,
+                    '-s', aptOutput
+            ]
+        }
+        variant.javaCompile.source = variant.javaCompile.source.filter { p ->
+            return !p.getPath().startsWith(aptOutput.getPath())
+        }
+    }
+
+    packagingOptions {
+        exclude 'META-INF/ASL2.0'
+        exclude 'META-INF/LICENSE'
+        exclude 'META-INF/license.txt'
+        exclude 'META-INF/NOTICE'
+        exclude 'META-INF/notice.txt'
+    }
+}
+
+def getSourceSetName(variant) {
+    return new File(variant.dirName).getName();
+}
+
+dependencies {
+    compile fileTree(dir: 'libs', include: ['*.jar'])
+    compile project(':model')
+    apt "org.androidannotations:androidannotations:${AAVersion}"
+    compile "org.androidannotations:androidannotations-api:${AAVersion}"
+    apt "com.squareup.dagger:dagger-compiler:${daggerVersion}"
+    compile "com.squareup.dagger:dagger:${daggerVersion}"
+
+    compile 'com.actionbarsherlock:actionbarsherlock:4.4.0@aar'
+    compile 'com.android.support:support-v4:19.0.+'
+
+    compile 'org.springframework.android:spring-android-rest-template:1.0.1.RELEASE'
+    compile 'org.springframework.android:spring-android-auth:1.0.1.RELEASE'
+    compile 'org.springframework.android:spring-android-core:1.0.1.RELEASE'
+    compile 'com.j256.ormlite:ormlite-android:4.46'
+}
