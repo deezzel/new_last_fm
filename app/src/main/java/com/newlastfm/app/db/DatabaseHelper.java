@@ -16,7 +16,7 @@ import java.sql.SQLException;
  */
 public class DatabaseHelper extends OrmLiteSqliteOpenHelper {
     private static final String DATABASE_NAME = "newlastfm.db";
-    private static final int DATABASE_VERSION = 1;
+    private static final int DATABASE_VERSION = 2;
 
     private UserDAO userDAO;
 
@@ -40,7 +40,12 @@ public class DatabaseHelper extends OrmLiteSqliteOpenHelper {
 
     @Override
     public void onUpgrade(SQLiteDatabase sqLiteDatabase, ConnectionSource connectionSource, int i, int i2) {
-
+        try{
+            TableUtils.dropTable(connectionSource,User.class, true);
+            onCreate(sqLiteDatabase,connectionSource);
+        } catch (final SQLException e){
+            throw new RuntimeException();
+        }
     }
 
     public UserDAO getUserDAO() {

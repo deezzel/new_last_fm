@@ -17,12 +17,18 @@ import android.widget.LinearLayout;
 import android.widget.ListView;
 
 import com.newlastfm.app.adapter.NavDrawerListAdapter;
+import com.newlastfm.app.db.DatabaseHelper;
 import com.newlastfm.app.ui.MessagesFragment;
 import com.newlastfm.app.ui.FriendsFragment;
 import com.newlastfm.app.ui.LibraryFragment;
 import com.newlastfm.app.ui.ProfileFragment;
 import com.newlastfm.app.ui.drawer.NavDrawerItem;
 import com.newlastfm.app.ui.SettingsFragment;
+import com.newlastfm.model.User;
+
+import org.androidannotations.annotations.Background;
+import org.androidannotations.annotations.Bean;
+import org.json.JSONObject;
 
 import java.util.ArrayList;
 
@@ -46,6 +52,11 @@ public class MainActivity extends Activity {
 
     private ArrayList<NavDrawerItem> navDrawerItems;
     private NavDrawerListAdapter adapter;
+    private User user;
+    private DatabaseHelper dbHelper;
+
+    @Bean
+    LastFmSession lastfmSession;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -119,8 +130,15 @@ public class MainActivity extends Activity {
             // on first time display view for first nav item
             displayView(0);
         }
+
     }
 
+    @Background
+    String retrieveUserName(){
+        JSONObject user = lastfmSession.doGetRequest(lastfmSession.formURLToGetUserInfo(
+                Constants.apiUrl,Constants.apiKey,Constants.methodGetUserInfo,Constants.format,"deezzel07"));
+        user = new User(user.getString("name"),user.getString())
+    }
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
