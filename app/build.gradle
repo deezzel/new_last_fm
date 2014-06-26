@@ -19,6 +19,12 @@ configurations {
     androidannotations.extendsFrom(compile)
 }
 
+configurations.compile {
+    exclude module: 'spring-core'
+    exclude module: 'spring-web'
+    exclude module: 'commons-logging'
+}
+
 android {
     compileSdkVersion 19
     buildToolsVersion "19.1.0"
@@ -83,8 +89,12 @@ dependencies {
     compile "org.androidannotations:androidannotations-api:${AAVersion}"
     apt "com.squareup.dagger:dagger-compiler:${daggerVersion}"
     compile "com.squareup.dagger:dagger:${daggerVersion}"
-
-    compile 'com.actionbarsherlock:actionbarsherlock:4.4.0@aar'
-    compile 'com.android.support:support-v4:19.1.+'
+    compile 'com.android.support:appcompat-v7:19.+'
+//    compile 'com.actionbarsherlock:actionbarsherlock:4.4.0@aar'
+//    compile 'com.android.support:support-v4:19.1.+'
     compile 'com.j256.ormlite:ormlite-android:4.46'
+
+    compile 'org.springframework.android:spring-android-rest-template:1.0.1.RELEASE'
+    compile 'org.springframework.android:spring-android-auth:1.0.1.RELEASE'
+    compile 'org.springframework.android:spring-android-core:1.0.1.RELEASE'
 }
