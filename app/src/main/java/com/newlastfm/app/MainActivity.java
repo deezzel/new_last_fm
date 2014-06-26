@@ -133,11 +133,14 @@ public class MainActivity extends Activity {
 
     }
 
-    @Background
     String retrieveUserName(){
-        JSONObject user = lastfmSession.doGetRequest(lastfmSession.formURLToGetUserInfo(
-                Constants.apiUrl,Constants.apiKey,Constants.methodGetUserInfo,Constants.format,"deezzel07"));
-        user = new User(user.getString("name"),user.getString())
+        try {
+            JSONObject user = lastfmSession.doGetRequest(lastfmSession.formURLToGetUserInfo(
+                    Constants.apiUrl, Constants.apiKey, Constants.methodGetUserInfo, Constants.format, "deezzel07"));
+            return user.getString("name");
+        } catch (Exception e){
+            throw new RuntimeException();
+        }
     }
 
     @Override
