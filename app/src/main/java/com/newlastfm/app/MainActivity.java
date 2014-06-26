@@ -15,6 +15,7 @@ import android.view.View;
 import android.widget.AdapterView;
 import android.widget.LinearLayout;
 import android.widget.ListView;
+import android.widget.TextView;
 
 import com.newlastfm.app.adapter.NavDrawerListAdapter;
 import com.newlastfm.app.db.DatabaseHelper;
@@ -28,11 +29,12 @@ import com.newlastfm.model.User;
 
 import org.androidannotations.annotations.Background;
 import org.androidannotations.annotations.Bean;
+import org.androidannotations.annotations.EActivity;
 import org.json.JSONObject;
 
 import java.util.ArrayList;
 
-
+@EActivity
 public class MainActivity extends Activity {
 
     private DrawerLayout mDrawerLayout;
@@ -54,8 +56,9 @@ public class MainActivity extends Activity {
     private NavDrawerListAdapter adapter;
     private User user;
     private DatabaseHelper dbHelper;
+    private TextView userFullName;
+    String userName;
 
-    @Bean
     LastFmSession lastfmSession;
 
     @Override
@@ -130,14 +133,32 @@ public class MainActivity extends Activity {
             // on first time display view for first nav item
             displayView(0);
         }
-
+        userFullName = (TextView) findViewById(R.id.userFullName);
+        retrieveInfo();
+        userFullName.setText(userName);
     }
 
+
+    @Background
+    void retrieveInfo(){
+        userName = retrieveUserName();
+    }
     String retrieveUserName(){
         try {
             JSONObject user = lastfmSession.doGetRequest(lastfmSession.formURLToGetUserInfo(
                     Constants.apiUrl, Constants.apiKey, Constants.methodGetUserInfo, Constants.format, "deezzel07"));
             return user.getString("name");
+        } catch (Exception e){
+            throw new RuntimeException();
+        }
+    }
+
+    String retrieveLinkToAvatar(){
+        try {
+            JSONObject user = lastfmSession.doGetRequest(lastfmSession.formURLToGetUserInfo(
+                    Constants.apiUrl, Constants.apiKey, Constants.methodGetUserInfo, Constants.format, "deezzel07"));
+            JSONObject images = user.getJSONObject("image");
+            return images.getString("#text");
         } catch (Exception e){
             throw new RuntimeException();
         }
