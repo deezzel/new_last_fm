@@ -1,5 +1,5 @@
-buildscript{
-    repositories{
+buildscript {
+    repositories {
         mavenCentral()
     }
     dependencies {
@@ -18,13 +18,11 @@ configurations {
     androidannotations
     androidannotations.extendsFrom(compile)
 }
+
 configurations.compile {
     exclude module: 'spring-core'
     exclude module: 'spring-web'
     exclude module: 'commons-logging'
-}
-repositories{
-    mavenCentral()
 }
 
 android {
@@ -44,17 +42,18 @@ android {
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
         }
     }
+
     sourceSets {
         main {
             manifest.srcFile 'src/main/AndroidManifest.xml'
-            java.srcDirs = ['src/main/java']
+            java.srcDirs = ['src/main/java', 'src_gen/debug']
             resources.srcDirs = ['src/main/res']
         }
     }
 
     applicationVariants.all { variant ->
         //  println "create folder for androidannotations:  ${aptOutput}"
-        aptOutput = file("${project.buildDir}/source/apt_generated/${variant.dirName}")
+        aptOutput = file("${project.buildDir}/../src_gen/${variant.dirName}")
         android.sourceSets[getSourceSetName(variant)].java.srcDirs += aptOutput.getPath()
         variant.javaCompile.doFirst {
             aptOutput.mkdirs()
@@ -90,12 +89,12 @@ dependencies {
     compile "org.androidannotations:androidannotations-api:${AAVersion}"
     apt "com.squareup.dagger:dagger-compiler:${daggerVersion}"
     compile "com.squareup.dagger:dagger:${daggerVersion}"
-
-    compile 'com.actionbarsherlock:actionbarsherlock:4.4.0@aar'
-    compile 'com.android.support:support-v4:19.0.+'
+    compile 'com.android.support:appcompat-v7:19.+'
+//    compile 'com.actionbarsherlock:actionbarsherlock:4.4.0@aar'
+//    compile 'com.android.support:support-v4:19.1.+'
+    compile 'com.j256.ormlite:ormlite-android:4.46'
 
     compile 'org.springframework.android:spring-android-rest-template:1.0.1.RELEASE'
     compile 'org.springframework.android:spring-android-auth:1.0.1.RELEASE'
     compile 'org.springframework.android:spring-android-core:1.0.1.RELEASE'
-    compile 'com.j256.ormlite:ormlite-android:4.46'
 }

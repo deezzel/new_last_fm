@@ -3,9 +3,9 @@ package com.newlastfm.model;
 import com.j256.ormlite.field.DataType;
 import com.j256.ormlite.field.DatabaseField;
 import com.j256.ormlite.table.DatabaseTable;
-import com.newlastfm.model.dao.UserDao;
+import com.newlastfm.model.dao.UserDAO;
 
-@DatabaseTable(daoClass = UserDao.class)
+@DatabaseTable(daoClass = UserDAO.class)
 public class User {
 
     private static final String NAME_FIELD = "name";
