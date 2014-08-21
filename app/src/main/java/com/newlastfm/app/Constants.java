@@ -8,4 +8,6 @@ public interface Constants {
     static String apiKey = "f692000fb97fb5d8427fa377e7dc9c64";
     static String methodGetUserInfo = "user.getinfo";
     static String format = "json";
+    int DEVELOPMENT = 0;
+    String TAG = "NEWLF";
 }

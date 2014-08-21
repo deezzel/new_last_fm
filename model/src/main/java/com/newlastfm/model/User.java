@@ -7,57 +7,46 @@ import com.newlastfm.model.dao.UserDAO;
 
 @DatabaseTable(daoClass = UserDAO.class)
 public class User {
-
-    private static final String NAME_FIELD = "name";
-
-    public User(String name, String playcount, String avatar_url){
-        this.setName(name);
-        this.setAvatar_url(avatar_url);
-        this.setPlaycount(playcount);
-    }
+    public static int ID = 1;
 
     @DatabaseField(generatedId = true)
-    private int id;
+    public int id;
 
-    @DatabaseField(dataType = DataType.STRING, columnName = NAME_FIELD)
-    private String name;
-
-    @DatabaseField(dataType = DataType.STRING, columnName = "avatar_url")
-    private String avatar_url;
-
+    @DatabaseField(dataType = DataType.STRING, canBeNull = false)
+    public String name;
+    @DatabaseField(dataType = DataType.STRING, canBeNull = false)
+    public String realname;
+    @DatabaseField(dataType = DataType.STRING, canBeNull = false)
+    public String avatar_url;
+    @DatabaseField(dataType = DataType.INTEGER)
+    public int playcount;
     @DatabaseField(dataType = DataType.STRING)
-    private String playcount;
+    public String url;
+    @DatabaseField(dataType = DataType.STRING)
+    public String country;
+    @DatabaseField(dataType = DataType.INTEGER)
+    public int age;
+    @DatabaseField(dataType = DataType.STRING)
+    public String gender;
+    @DatabaseField(dataType = DataType.STRING)
+    public String registered;
+    @DatabaseField(dataType = DataType.INTEGER)
+    public int playlists;
 
-
-    public int getId() {
-        return id;
-    }
-
-    public void setId(int id) {
-        this.id = id;
-    }
-
-    public String getName() {
-        return name;
-    }
-
-    public void setName(String name) {
-        this.name = name;
-    }
-
-    public String getAvatar_url() {
-        return avatar_url;
-    }
-
-    public void setAvatar_url(String avatar_url) {
-        this.avatar_url = avatar_url;
-    }
-
-    public String getPlaycount() {
-        return playcount;
-    }
-
-    public void setPlaycount(String playcount) {
-        this.playcount = playcount;
+    public static User newInstance(String name, String realname, String avatar_url, int playcount, String url,
+                                   String country, int age, String gender, String registered, int playlists) {
+        User user = new User();
+        user.id = ID;
+        user.name = name;
+        user.realname = realname;
+        user.avatar_url = avatar_url;
+        user.playcount = playcount;
+        user.url = url;
+        user.country = country;
+        user.age = age;
+        user.gender = gender;
+        user.registered = registered;
+        user.playlists = playlists;
+        return user;
     }
 }

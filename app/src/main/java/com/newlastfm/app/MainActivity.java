@@ -19,12 +19,12 @@ import android.widget.TextView;
 
 import com.newlastfm.app.adapter.NavDrawerListAdapter;
 import com.newlastfm.app.db.DatabaseHelper;
-import com.newlastfm.app.ui.MessagesFragment;
 import com.newlastfm.app.ui.FriendsFragment;
 import com.newlastfm.app.ui.LibraryFragment;
+import com.newlastfm.app.ui.MessagesFragment;
 import com.newlastfm.app.ui.ProfileFragment;
-import com.newlastfm.app.ui.drawer.NavDrawerItem;
 import com.newlastfm.app.ui.SettingsFragment;
+import com.newlastfm.app.ui.drawer.NavDrawerItem;
 import com.newlastfm.model.User;
 
 import org.androidannotations.annotations.Background;
@@ -37,29 +37,25 @@ import java.util.ArrayList;
 @EActivity
 public class MainActivity extends Activity {
 
+    String userName;
+    @Bean
+    LastFmSession lastfmSession;
     private DrawerLayout mDrawerLayout;
     private ListView mDrawerList;
     private ActionBarDrawerToggle mDrawerToggle;
     private LinearLayout contentLayout;
-
     // nav drawer title
     private CharSequence mDrawerTitle;
-
     // used to store app title
     private CharSequence mTitle;
-
     // slide menu items
     private String[] navMenuTitles;
     private TypedArray navMenuIcons;
-
     private ArrayList<NavDrawerItem> navDrawerItems;
     private NavDrawerListAdapter adapter;
     private User user;
     private DatabaseHelper dbHelper;
     private TextView userFullName;
-    String userName;
-
-    LastFmSession lastfmSession;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -113,7 +109,7 @@ public class MainActivity extends Activity {
                 R.drawable.ic_drawer, //nav menu toggle icon
                 R.string.app_name, // nav drawer open - description for accessibility
                 R.string.app_name // nav drawer close - description for accessibility
-        ){
+        ) {
             public void onDrawerClosed(View view) {
                 getActionBar().setTitle(mTitle);
                 // calling onPrepareOptionsMenu() to show action bar icons
@@ -134,32 +130,33 @@ public class MainActivity extends Activity {
             displayView(0);
         }
         userFullName = (TextView) findViewById(R.id.userFullName);
-        retrieveInfo();
-        userFullName.setText(userName);
+//        retrieveInfo();
+//        userFullName.setText(userName);
     }
 
 
     @Background
-    void retrieveInfo(){
+    void retrieveInfo() {
         userName = retrieveUserName();
     }
-    String retrieveUserName(){
+
+    String retrieveUserName() {
         try {
             JSONObject user = lastfmSession.doGetRequest(lastfmSession.formURLToGetUserInfo(
                     Constants.apiUrl, Constants.apiKey, Constants.methodGetUserInfo, Constants.format, "deezzel07"));
             return user.getString("name");
-        } catch (Exception e){
+        } catch (Exception e) {
             throw new RuntimeException();
         }
     }
 
-    String retrieveLinkToAvatar(){
+    String retrieveLinkToAvatar() {
         try {
             JSONObject user = lastfmSession.doGetRequest(lastfmSession.formURLToGetUserInfo(
                     Constants.apiUrl, Constants.apiKey, Constants.methodGetUserInfo, Constants.format, "deezzel07"));
             JSONObject images = user.getJSONObject("image");
             return images.getString("#text");
-        } catch (Exception e){
+        } catch (Exception e) {
             throw new RuntimeException();
         }
     }
@@ -185,7 +182,7 @@ public class MainActivity extends Activity {
         }
     }
 
-    /***
+    /**
      * Called when invalidateOptionsMenu() is triggered
      */
     @Override
@@ -222,19 +219,9 @@ public class MainActivity extends Activity {
         mDrawerToggle.onConfigurationChanged(newConfig);
     }
 
-    private class SlideMenuClickListener implements AdapterView.OnItemClickListener {
-        @Override
-        public void onItemClick(AdapterView<?> parent, View view, int position,
-                                long id) {
-            // display view for selected nav drawer item
-            if (navDrawerItems.get(position).getDrawerTitle() == null) {
-                displayView(position);
-            }
-        }
-    }
     /**
      * Diplaying fragment view for selected nav drawer list item
-     * */
+     */
     private void displayView(int position) {
         // update the main content by replacing fragments
         Fragment fragment = null;
@@ -273,6 +260,17 @@ public class MainActivity extends Activity {
         } else {
             // error in creating fragment
             Log.e("MainActivity", "Error in creating fragment");
+        }
+    }
+
+    private class SlideMenuClickListener implements AdapterView.OnItemClickListener {
+        @Override
+        public void onItemClick(AdapterView<?> parent, View view, int position,
+                                long id) {
+            // display view for selected nav drawer item
+            if (navDrawerItems.get(position).getDrawerTitle() == null) {
+                displayView(position);
+            }
         }
     }
 }

@@ -2,10 +2,13 @@ package com.newlastfm.app.db;
 
 import android.content.Context;
 import android.database.sqlite.SQLiteDatabase;
+import android.util.Log;
 
 import com.j256.ormlite.android.apptools.OrmLiteSqliteOpenHelper;
 import com.j256.ormlite.support.ConnectionSource;
 import com.j256.ormlite.table.TableUtils;
+import com.newlastfm.app.Constants;
+import com.newlastfm.app.ExceptionHandler;
 import com.newlastfm.model.User;
 import com.newlastfm.model.dao.UserDAO;
 
@@ -18,13 +21,13 @@ public class DatabaseHelper extends OrmLiteSqliteOpenHelper {
     private static final String DATABASE_NAME = "newlastfm.db";
     private static final int DATABASE_VERSION = 2;
 
-    private UserDAO userDAO;
+    public final UserDAO userDAO;
 
     public DatabaseHelper(Context context) {
         super(context, DATABASE_NAME, null, DATABASE_VERSION);
         try {
-            setUserDAO(new UserDAO(getConnectionSource(), User.class));
-        } catch (SQLException e){
+            userDAO = new UserDAO(getConnectionSource(), User.class);
+        } catch (SQLException e) {
             throw new RuntimeException(e);
         }
     }
@@ -33,26 +36,19 @@ public class DatabaseHelper extends OrmLiteSqliteOpenHelper {
     public void onCreate(SQLiteDatabase sqLiteDatabase, ConnectionSource connectionSource) {
         try {
             TableUtils.createTable(connectionSource, User.class);
-        } catch (Exception e){
+        } catch (Exception e) {
             throw new RuntimeException(e);
         }
     }
 
     @Override
     public void onUpgrade(SQLiteDatabase sqLiteDatabase, ConnectionSource connectionSource, int i, int i2) {
-        try{
-            TableUtils.dropTable(connectionSource,User.class, true);
-            onCreate(sqLiteDatabase,connectionSource);
-        } catch (final SQLException e){
-            throw new RuntimeException();
+        try {
+            TableUtils.dropTable(connectionSource, User.class, true);
+            onCreate(sqLiteDatabase, connectionSource);
+        } catch (final SQLException e) {
+            ExceptionHandler.handle(e);
+            Log.e(Constants.TAG, "Error upgrading db " + DATABASE_NAME + "from version " + i);
         }
-    }
-
-    public UserDAO getUserDAO() {
-        return userDAO;
-    }
-
-    public void setUserDAO(UserDAO userDAO) {
-        this.userDAO = userDAO;
     }
 }
