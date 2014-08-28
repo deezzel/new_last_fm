@@ -5,6 +5,7 @@ import android.app.Fragment;
 import android.app.FragmentManager;
 import android.content.res.Configuration;
 import android.content.res.TypedArray;
+import android.graphics.Bitmap;
 import android.os.Bundle;
 import android.support.v4.app.ActionBarDrawerToggle;
 import android.support.v4.widget.DrawerLayout;
@@ -13,6 +14,7 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.TextView;
@@ -26,12 +28,17 @@ import com.newlastfm.app.ui.ProfileFragment;
 import com.newlastfm.app.ui.SettingsFragment;
 import com.newlastfm.app.ui.drawer.NavDrawerItem;
 import com.newlastfm.model.User;
+import com.newlastfm.model.UserData;
 
 import org.androidannotations.annotations.Background;
 import org.androidannotations.annotations.Bean;
 import org.androidannotations.annotations.EActivity;
+import org.androidannotations.annotations.UiThread;
+import org.androidannotations.annotations.ViewById;
 import org.json.JSONObject;
 
+import java.net.MalformedURLException;
+import java.net.URL;
 import java.util.ArrayList;
 
 @EActivity
@@ -40,8 +47,16 @@ public class MainActivity extends Activity {
     String userName;
     @Bean
     LastFmSession lastfmSession;
-    private DrawerLayout mDrawerLayout;
-    private ListView mDrawerList;
+    @Bean
+    AppContext ctx;
+    @ViewById(R.id.drawer_layout)
+    DrawerLayout mDrawerLayout;
+    @ViewById(R.id.list_slidermenu)
+    ListView mDrawerList;
+    @ViewById(R.id.userFullName)
+    TextView userFullName;
+    @ViewById(R.id.userAvatar)
+    ImageView avatar;
     private ActionBarDrawerToggle mDrawerToggle;
     private LinearLayout contentLayout;
     // nav drawer title
@@ -55,7 +70,8 @@ public class MainActivity extends Activity {
     private NavDrawerListAdapter adapter;
     private User user;
     private DatabaseHelper dbHelper;
-    private TextView userFullName;
+    private UserData userData;
+    private Bitmap userAvatar;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -129,15 +145,28 @@ public class MainActivity extends Activity {
             // on first time display view for first nav item
             displayView(0);
         }
-        userFullName = (TextView) findViewById(R.id.userFullName);
-//        retrieveInfo();
-//        userFullName.setText(userName);
+        retrieveInfo();
     }
-
 
     @Background
     void retrieveInfo() {
-        userName = retrieveUserName();
+        userData = ctx.api.getUserInfo(Constants.methodGetUserInfo, "deezzel07", Constants.apiKey,
+                Constants.format).getData();
+        userName = userData.getUser().getName();
+        URL url = null;
+        try {
+            url = new URL(userData.getUser().getImage().get(2).getText());
+        } catch (MalformedURLException e) {
+            e.printStackTrace();
+        }
+        userAvatar = Utils.getAvatarFromLink(url);
+        populateDrawerTopBar();
+    }
+
+    @UiThread
+    void populateDrawerTopBar() {
+        userFullName.setText(userName);
+        avatar.setImageBitmap(userAvatar);
     }
 
     String retrieveUserName() {
