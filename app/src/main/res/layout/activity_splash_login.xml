@@ -3,7 +3,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:background="@drawable/splash_bg"
-                tools:context="com.newlastfm.app.activity.SplashActivity">
+                tools:context="com.newlastfm.app.activity.SplashLoginActivity">
 
     <TextView
         android:id="@+id/logoText"
@@ -49,6 +49,7 @@
         android:layout_marginRight="24dp"
         android:hint="Password"
         android:paddingTop="8dp"
+        android:password="true"
         android:singleLine="true"
         android:textColor="@android:color/white"
         android:textSize="24dp"/>

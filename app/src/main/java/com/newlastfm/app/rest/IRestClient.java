@@ -1,9 +1,12 @@
 package com.newlastfm.app.rest;
 
+import com.newlastfm.model.LoginParams;
+import com.newlastfm.model.SessionData;
 import com.newlastfm.model.UserData;
 
 import org.androidannotations.annotations.rest.Accept;
 import org.androidannotations.annotations.rest.Get;
+import org.androidannotations.annotations.rest.Post;
 import org.androidannotations.annotations.rest.Rest;
 import org.androidannotations.api.rest.MediaType;
 import org.springframework.http.ResponseEntity;
@@ -21,6 +24,10 @@ public interface IRestClient {
     @Get("?method={method}&user={userName}&api_key={apiKey}&format={format}")
     @Accept(MediaType.APPLICATION_JSON)
     ResponseEntity<UserData> getUserInfo(String method, String userName, String apiKey, String format);
+
+    @Post("")
+    @Accept(MediaType.APPLICATION_JSON)
+    ResponseEntity<SessionData> login(LoginParams loginParams);
 
     RestTemplate getRestTemplate();
 }

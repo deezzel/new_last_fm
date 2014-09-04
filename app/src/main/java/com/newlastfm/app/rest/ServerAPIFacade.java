@@ -4,7 +4,9 @@ import android.util.Log;
 
 import com.google.gson.Gson;
 import com.newlastfm.app.Constants;
+import com.newlastfm.model.LoginParams;
 import com.newlastfm.model.RequestError;
+import com.newlastfm.model.SessionData;
 import com.newlastfm.model.UserData;
 
 import org.androidannotations.annotations.AfterInject;
@@ -36,6 +38,21 @@ public class ServerAPIFacade {
     void init() {
         template = restClient.getRestTemplate();
         template.setErrorHandler(new CustomResponseErrorHandler());
+    }
+
+    public RequestResult<SessionData> login(final String username, final String password, final String apiKey,
+                                            final String apiSig, final String method, final String format) {
+        final RequestResult<SessionData> result = executeRequest(new Request<SessionData>() {
+            @Override
+            public ResponseEntity<SessionData> execute() {
+                return restClient.login(new LoginParams(username, password, apiKey, apiSig, method, format));
+            }
+        });
+
+        if (result.getRequestError() == null) {
+            Log.i(Constants.TAG, "Success");
+        }
+        return result;
     }
 
     public RequestResult<UserData> getUserInfo(final String method, final String userName, final String apiKey, final String format) {

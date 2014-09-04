@@ -21,7 +21,7 @@ public class ZeroActivity extends Activity {
     @Override
     protected void onCreate(Bundle savedInstance) {
         super.onCreate(savedInstance);
-        startActivity(new Intent(this, SplashActivity_.class));
+        startActivity(new Intent(this, SplashLoginActivity_.class));
         finish();
     }
 }

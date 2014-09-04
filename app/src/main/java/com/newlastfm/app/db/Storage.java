@@ -1,8 +1,12 @@
 package com.newlastfm.app.db;
 
+import com.newlastfm.app.ExceptionHandler;
+import com.newlastfm.model.User;
 import com.newlastfm.model.dao.UserDAO;
 
 import org.androidannotations.annotations.EBean;
+
+import java.sql.SQLException;
 
 /**
  * Created by Artem Mykhelson <artem.mykhelson@t4soft.com> on 8/18/14.
@@ -13,5 +17,23 @@ public class Storage {
 
     public void init(DatabaseHelper databaseHelper) {
         userDAO = databaseHelper.userDAO;
+    }
+
+    public User getUser() {
+        return userDAO.get();
+    }
+
+    public User update(User user) {
+        if (user == null) throw new IllegalArgumentException("Can't update null user");
+        try {
+            userDAO.createOrUpdate(user);
+        } catch (SQLException e) {
+            ExceptionHandler.handle(e);
+        }
+        return getUser();
+    }
+
+    public void delete(User user) {
+        userDAO.delete(user);
     }
 }

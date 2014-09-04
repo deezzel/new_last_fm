@@ -35,7 +35,6 @@ import org.androidannotations.annotations.Bean;
 import org.androidannotations.annotations.EActivity;
 import org.androidannotations.annotations.UiThread;
 import org.androidannotations.annotations.ViewById;
-import org.json.JSONObject;
 
 import java.net.MalformedURLException;
 import java.net.URL;
@@ -150,12 +149,10 @@ public class MainActivity extends Activity {
 
     @Background
     void retrieveInfo() {
-        userData = ctx.api.getUserInfo(Constants.methodGetUserInfo, "deezzel07", Constants.apiKey,
-                Constants.format).getData();
-        userName = userData.getUser().getName();
+        userName = ctx.storage.getUser().name;
         URL url = null;
         try {
-            url = new URL(userData.getUser().getImage().get(2).getText());
+            url = new URL(ctx.storage.getUser().avatar_url);
         } catch (MalformedURLException e) {
             e.printStackTrace();
         }
@@ -167,27 +164,6 @@ public class MainActivity extends Activity {
     void populateDrawerTopBar() {
         userFullName.setText(userName);
         avatar.setImageBitmap(userAvatar);
-    }
-
-    String retrieveUserName() {
-        try {
-            JSONObject user = lastfmSession.doGetRequest(lastfmSession.formURLToGetUserInfo(
-                    Constants.apiUrl, Constants.apiKey, Constants.methodGetUserInfo, Constants.format, "deezzel07"));
-            return user.getString("name");
-        } catch (Exception e) {
-            throw new RuntimeException();
-        }
-    }
-
-    String retrieveLinkToAvatar() {
-        try {
-            JSONObject user = lastfmSession.doGetRequest(lastfmSession.formURLToGetUserInfo(
-                    Constants.apiUrl, Constants.apiKey, Constants.methodGetUserInfo, Constants.format, "deezzel07"));
-            JSONObject images = user.getJSONObject("image");
-            return images.getString("#text");
-        } catch (Exception e) {
-            throw new RuntimeException();
-        }
     }
 
     @Override

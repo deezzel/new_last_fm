@@ -4,7 +4,7 @@ buildscript {
     }
     dependencies {
         classpath 'com.android.tools.build:gradle:0.12.2'
-        classpath 'com.neenbedankt.gradle.plugins:android-apt:1.1'
+        classpath 'com.neenbedankt.gradle.plugins:android-apt:1.4+'
     }
 }
 
@@ -75,6 +75,12 @@ android {
         exclude 'META-INF/license.txt'
         exclude 'META-INF/NOTICE'
         exclude 'META-INF/notice.txt'
+    }
+}
+
+apt {
+    arguments {
+        androidManifestFile variant.processResources.manifestFile
     }
 }
 
