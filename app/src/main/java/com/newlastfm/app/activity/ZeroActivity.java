@@ -5,6 +5,7 @@ import android.content.Intent;
 import android.os.Bundle;
 
 import com.newlastfm.app.AppContext;
+import com.newlastfm.app.MainActivity_;
 
 import org.androidannotations.annotations.Bean;
 import org.androidannotations.annotations.EActivity;
@@ -21,7 +22,11 @@ public class ZeroActivity extends Activity {
     @Override
     protected void onCreate(Bundle savedInstance) {
         super.onCreate(savedInstance);
-        startActivity(new Intent(this, SplashLoginActivity_.class));
-        finish();
+        if (ctx.storage.getUser() == null) {
+            startActivity(new Intent(this, SplashLoginActivity_.class));
+            finish();
+        } else {
+            startActivity(new Intent(this, MainActivity_.class));
+        }
     }
 }

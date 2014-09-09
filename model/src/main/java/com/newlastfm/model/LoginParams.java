@@ -9,16 +9,13 @@ public class LoginParams {
     private String apiKey;
     private String apiSig;
     private String method;
-    private String format;
 
-    public LoginParams(String username, String password, String apiKey,
-                       String apiSig, String method, String format) {
+    public LoginParams(String username, String password, String method, String apiKey, String apiSig) {
         this.username = username;
         this.password = password;
+        this.method = method;
         this.apiKey = apiKey;
         this.apiSig = apiSig;
-        this.method = method;
-        this.format = format;
     }
 
     public LoginParams() {

@@ -1,0 +1,90 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent">
+
+    <ImageView
+        android:id="@+id/imageCover"
+        android:layout_width="200dp"
+        android:layout_height="200dp"
+        android:scaleType="centerCrop"
+        android:src="@drawable/sonic"/>
+
+    <TextView
+        android:id="@+id/textView"
+        android:layout_width="200dp"
+        android:layout_height="70dp"
+        android:layout_alignBottom="@+id/imageCover"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true"
+        android:background="#CC2B2B2B"/>
+
+    <TextView
+        android:id="@+id/artistName"
+        android:layout_width="200dp"
+        android:layout_height="wrap_content"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true"
+        android:layout_alignTop="@+id/textView"
+        android:text="Dead by April"
+        android:textColor="@android:color/white"
+        android:textSize="18dp"
+        android:textStyle="bold"/>
+
+    <TextView
+        android:id="@+id/similarArtists"
+        android:layout_width="200dp"
+        android:layout_height="wrap_content"
+        android:layout_alignBottom="@+id/textView"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true"
+        android:text="Similar to Sonic Syndicate and Hollywood Undead"
+        android:textColor="@android:color/white"
+        android:textSize="16dp"/>
+
+    <RelativeLayout
+        android:id="@+id/relativeLayout3"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_above="@+id/textView"
+        android:layout_alignRight="@+id/imageCover">
+
+        <ImageView
+            android:layout_width="50dp"
+            android:layout_height="50dp"
+            android:layout_centerInParent="true"
+            android:background="@drawable/avatar_bg"/>
+
+        <com.newlastfm.app.ui.widget.RoundedImageView
+            android:id="@+id/similarArtistCover2"
+            android:layout_width="48dp"
+            android:layout_height="48dp"
+            android:layout_centerInParent="true"
+            android:scaleType="centerCrop"
+            android:src="@drawable/holly"/>
+    </RelativeLayout>
+
+    <RelativeLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignTop="@+id/relativeLayout3"
+        android:layout_marginRight="-10dp"
+        android:layout_toLeftOf="@+id/relativeLayout3"
+        android:layout_toStartOf="@+id/relativeLayout3">
+
+        <ImageView
+            android:layout_width="50dp"
+            android:layout_height="50dp"
+            android:layout_centerInParent="true"
+            android:background="@drawable/avatar_bg"/>
+
+        <com.newlastfm.app.ui.widget.RoundedImageView
+            android:id="@+id/similarArtistCover1"
+            android:layout_width="48dp"
+            android:layout_height="48dp"
+            android:layout_centerInParent="true"
+            android:scaleType="centerCrop"
+            android:src="@drawable/sonic1"/>
+    </RelativeLayout>
+</RelativeLayout>

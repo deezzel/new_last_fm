@@ -40,12 +40,12 @@ public class ServerAPIFacade {
         template.setErrorHandler(new CustomResponseErrorHandler());
     }
 
-    public RequestResult<SessionData> login(final String username, final String password, final String apiKey,
-                                            final String apiSig, final String method, final String format) {
+    public RequestResult<SessionData> login(final String username, final String password,
+                                            final String method, final String apiKey, final String apiSig) {
         final RequestResult<SessionData> result = executeRequest(new Request<SessionData>() {
             @Override
             public ResponseEntity<SessionData> execute() {
-                return restClient.login(new LoginParams(username, password, apiKey, apiSig, method, format));
+                return restClient.login(new LoginParams(username, password, method, apiKey, apiSig));
             }
         });
 

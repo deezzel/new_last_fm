@@ -2,6 +2,7 @@ package com.newlastfm.app.activity;
 
 import android.app.Activity;
 import android.content.Intent;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.animation.Animation;
@@ -32,6 +33,22 @@ import org.androidannotations.annotations.Click;
 import org.androidannotations.annotations.EActivity;
 import org.androidannotations.annotations.UiThread;
 import org.androidannotations.annotations.ViewById;
+import org.w3c.dom.Document;
+import org.w3c.dom.NodeList;
+import org.xml.sax.SAXException;
+
+import java.io.BufferedWriter;
+import java.io.IOException;
+import java.io.OutputStream;
+import java.io.OutputStreamWriter;
+import java.net.HttpURLConnection;
+import java.net.MalformedURLException;
+import java.net.ProtocolException;
+import java.net.URL;
+
+import javax.xml.parsers.DocumentBuilder;
+import javax.xml.parsers.DocumentBuilderFactory;
+import javax.xml.parsers.ParserConfigurationException;
 
 @EActivity(R.layout.activity_splash_login)
 public class SplashLoginActivity extends Activity implements Animation.AnimationListener, IValidatable {
@@ -52,7 +69,9 @@ public class SplashLoginActivity extends Activity implements Animation.Animation
     Animation splashAnimation;
     Animation loginFormAnimation;
     String apiSig;
+    String apiSigRecommendedArtists;
     RequestResult<SessionData> result;
+    String sk;
 
     @AfterViews
     void init() {
@@ -78,12 +97,67 @@ public class SplashLoginActivity extends Activity implements Animation.Animation
         }
     }
 
+    void doBackground() {
+        String urlString = Constants.apiUrl +
+                "method=" + "auth.getMobileSession" + "&password=" + password.getText().toString()
+                + "&username=" + login.getText().toString() + "&api_key" +
+                "=" + Constants.apiKey + "&api_sig=" + apiSig;
+        String resultToSend = "";
+        try {
+            URL url = new URL(Constants.apiUrl);
+            HttpURLConnection urlConnection = (HttpURLConnection) url.openConnection();
+            urlConnection.setRequestMethod("POST");
+            urlConnection.setDoOutput(true);
+
+            OutputStream dataOutputStream = urlConnection.getOutputStream();
+
+            BufferedWriter writer = new BufferedWriter(new OutputStreamWriter(dataOutputStream));
+
+            String post = urlString.substring(35);
+            writer.write(post);
+            writer.close();
+
+            int responseCode = urlConnection.getResponseCode();
+
+            DocumentBuilderFactory documentBuilderFactory = DocumentBuilderFactory.newInstance();
+            DocumentBuilder documentBuilder = documentBuilderFactory.newDocumentBuilder();
+            Document document = documentBuilder.parse(urlConnection.getInputStream());
+            document.getDocumentElement().normalize();
+            NodeList nodeList = document.getElementsByTagName("session");
+            if (nodeList.getLength() > 0 && nodeList != null) {
+                NodeList subList = nodeList.item(0).getChildNodes();
+                if (subList.getLength() > 0 && subList != null) {
+                    NodeList userNameList = subList.item(1).getChildNodes();//username
+                    NodeList keyList = subList.item(3).getChildNodes();//key
+
+                    String username_value = userNameList.item(0).getNodeValue();
+                    sk = keyList.item(0).getNodeValue();
+                    ;
+                }
+            }
+
+        } catch (MalformedURLException e) {
+            e.printStackTrace();
+        } catch (ProtocolException e) {
+            e.printStackTrace();
+        } catch (IOException e) {
+            e.printStackTrace();
+        } catch (ParserConfigurationException e) {
+            e.printStackTrace();
+        } catch (SAXException e) {
+            e.printStackTrace();
+        }
+    }
+
     @Background
     void login() {
         apiSig = Utils.buildApiSig(Constants.apiKey, "auth.getMobileSession", password.getText().toString(),
                 login.getText().toString(), Constants.secret);
-        result = ctx.api.login(login.getText().toString(), password.getText().toString(), Constants.apiKey, apiSig,
-                "auth.getMobileSession", "json");
+        doBackground();
+        result = ctx.api.login(login.getText().toString(), password.getText().toString(), "auth.getMobileSession",
+                Constants.apiKey, apiSig);
+        apiSigRecommendedArtists = Utils.buildApiSig(Constants.apiKey, "user.getRecommendedArtists", sk, Constants.secret);
+        Log.i(Constants.TAG, apiSigRecommendedArtists);
         storeUser();
     }
 
@@ -101,7 +175,8 @@ public class SplashLoginActivity extends Activity implements Animation.Animation
                 userData.getAge(),
                 userData.getGender(),
                 userData.getRegistered().getText(),
-                userData.getPlaylists()
+                userData.getPlaylists(),
+                sk
         );
         ctx.storage.update(user);
         afterLogin();

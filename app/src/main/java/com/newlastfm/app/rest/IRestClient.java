@@ -18,14 +18,15 @@ import org.springframework.web.client.RestTemplate;
  * Created by Artem Mykhelson <artem.mykhelson@t4soft.com> on 8/21/14.
  */
 
-@Rest(rootUrl = "http://ws.audioscrobbler.com/2.0/", converters = {GsonHttpMessageConverter.class, StringHttpMessageConverter.class})
+@Rest(rootUrl = "https://ws.audioscrobbler.com/2.0/", converters = {GsonHttpMessageConverter.class,
+        StringHttpMessageConverter.class})
 public interface IRestClient {
 
     @Get("?method={method}&user={userName}&api_key={apiKey}&format={format}")
     @Accept(MediaType.APPLICATION_JSON)
     ResponseEntity<UserData> getUserInfo(String method, String userName, String apiKey, String format);
 
-    @Post("")
+    @Post("?format=json")
     @Accept(MediaType.APPLICATION_JSON)
     ResponseEntity<SessionData> login(LoginParams loginParams);
 

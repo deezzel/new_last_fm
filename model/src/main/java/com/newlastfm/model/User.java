@@ -32,9 +32,12 @@ public class User {
     public String registered;
     @DatabaseField(dataType = DataType.INTEGER)
     public int playlists;
+    @DatabaseField(dataType = DataType.STRING)
+    public String sk;
 
     public static User newInstance(String name, String realname, String avatar_url, int playcount, String url,
-                                   String country, int age, String gender, String registered, int playlists) {
+                                   String country, int age, String gender, String registered, int playlists,
+                                   String sk) {
         User user = new User();
         user.id = ID;
         user.name = name;
@@ -47,6 +50,7 @@ public class User {
         user.gender = gender;
         user.registered = registered;
         user.playlists = playlists;
+        user.sk = sk;
         return user;
     }
 }

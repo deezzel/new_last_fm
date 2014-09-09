@@ -14,7 +14,6 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
-import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.TextView;
@@ -22,11 +21,12 @@ import android.widget.TextView;
 import com.newlastfm.app.adapter.NavDrawerListAdapter;
 import com.newlastfm.app.db.DatabaseHelper;
 import com.newlastfm.app.ui.FriendsFragment;
+import com.newlastfm.app.ui.HomeFragment;
 import com.newlastfm.app.ui.LibraryFragment;
 import com.newlastfm.app.ui.MessagesFragment;
-import com.newlastfm.app.ui.ProfileFragment;
 import com.newlastfm.app.ui.SettingsFragment;
 import com.newlastfm.app.ui.drawer.NavDrawerItem;
+import com.newlastfm.app.ui.widget.RoundedImageView;
 import com.newlastfm.model.User;
 import com.newlastfm.model.UserData;
 
@@ -55,7 +55,7 @@ public class MainActivity extends Activity {
     @ViewById(R.id.userFullName)
     TextView userFullName;
     @ViewById(R.id.userAvatar)
-    ImageView avatar;
+    RoundedImageView avatar;
     private ActionBarDrawerToggle mDrawerToggle;
     private LinearLayout contentLayout;
     // nav drawer title
@@ -95,7 +95,7 @@ public class MainActivity extends Activity {
 //        navDrawerItems.add(new NavDrawerItem(true)); // adding a cover to the list
 //        navDrawerItems.add(new NavDrawerItem("My Favorites")); // adding a header to the list
         // Home
-        navDrawerItems.add(new NavDrawerItem("Profile", R.drawable.ic_action_person));
+        navDrawerItems.add(new NavDrawerItem("Home", R.drawable.ic_action_home));
         // Find People
         navDrawerItems.add(new NavDrawerItem("Library", R.drawable.ic_action_collection));
         // Photos
@@ -232,7 +232,7 @@ public class MainActivity extends Activity {
         Fragment fragment = null;
         switch (position) {
             case 0:
-                fragment = new ProfileFragment();
+                fragment = new HomeFragment();
                 break;
             case 1:
                 fragment = new LibraryFragment();
