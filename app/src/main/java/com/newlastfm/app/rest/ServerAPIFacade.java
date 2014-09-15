@@ -4,7 +4,6 @@ import android.util.Log;
 
 import com.google.gson.Gson;
 import com.newlastfm.app.Constants;
-import com.newlastfm.model.LoginParams;
 import com.newlastfm.model.RequestError;
 import com.newlastfm.model.SessionData;
 import com.newlastfm.model.UserData;
@@ -21,7 +20,16 @@ import org.springframework.web.client.ResourceAccessException;
 import org.springframework.web.client.ResponseErrorHandler;
 import org.springframework.web.client.RestTemplate;
 
+import java.io.BufferedReader;
+import java.io.BufferedWriter;
 import java.io.IOException;
+import java.io.InputStreamReader;
+import java.io.OutputStream;
+import java.io.OutputStreamWriter;
+import java.net.HttpURLConnection;
+import java.net.MalformedURLException;
+import java.net.ProtocolException;
+import java.net.URL;
 
 /**
  * Created by Artem Mykhelson <artem.mykhelson@t4soft.com> on 8/21/14.
@@ -40,19 +48,42 @@ public class ServerAPIFacade {
         template.setErrorHandler(new CustomResponseErrorHandler());
     }
 
-    public RequestResult<SessionData> login(final String username, final String password,
-                                            final String method, final String apiKey, final String apiSig) {
-        final RequestResult<SessionData> result = executeRequest(new Request<SessionData>() {
-            @Override
-            public ResponseEntity<SessionData> execute() {
-                return restClient.login(new LoginParams(username, password, method, apiKey, apiSig));
-            }
-        });
+    public SessionData manualLogin(final String params) {
+        SessionData sessionData = null;
+        String jsonResponse = "";
+        try {
+            URL url = new URL(Constants.apiUrl);
+            HttpURLConnection urlConnection = (HttpURLConnection) url.openConnection();
+            urlConnection.setRequestMethod("POST");
+            urlConnection.setDoOutput(true);
 
-        if (result.getRequestError() == null) {
-            Log.i(Constants.TAG, "Success");
+            OutputStream dataOutputStream = urlConnection.getOutputStream();
+
+            BufferedWriter writer = new BufferedWriter(new OutputStreamWriter(dataOutputStream));
+            writer.write(params);
+            writer.close();
+
+            int responseCode = urlConnection.getResponseCode();
+            if (responseCode == 200) {
+                BufferedReader br = new BufferedReader(new InputStreamReader(urlConnection.getInputStream()));
+                StringBuilder sb = new StringBuilder();
+                String line;
+                while ((line = br.readLine()) != null) {
+                    sb.append(line + "\n");
+                }
+                br.close();
+                jsonResponse = sb.toString();
+            }
+            Gson gson = new Gson();
+            sessionData = gson.fromJson(jsonResponse, SessionData.class);
+        } catch (MalformedURLException e) {
+            e.printStackTrace();
+        } catch (ProtocolException e) {
+            e.printStackTrace();
+        } catch (IOException e) {
+            e.printStackTrace();
         }
-        return result;
+        return sessionData;
     }
 
     public RequestResult<UserData> getUserInfo(final String method, final String userName, final String apiKey, final String format) {

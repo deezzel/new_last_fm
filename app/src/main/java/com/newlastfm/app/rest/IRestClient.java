@@ -1,7 +1,6 @@
 package com.newlastfm.app.rest;
 
-import com.newlastfm.model.LoginParams;
-import com.newlastfm.model.SessionData;
+import com.newlastfm.model.RecommendedArtists;
 import com.newlastfm.model.UserData;
 
 import org.androidannotations.annotations.rest.Accept;
@@ -10,6 +9,7 @@ import org.androidannotations.annotations.rest.Post;
 import org.androidannotations.annotations.rest.Rest;
 import org.androidannotations.api.rest.MediaType;
 import org.springframework.http.ResponseEntity;
+import org.springframework.http.converter.FormHttpMessageConverter;
 import org.springframework.http.converter.StringHttpMessageConverter;
 import org.springframework.http.converter.json.GsonHttpMessageConverter;
 import org.springframework.web.client.RestTemplate;
@@ -19,7 +19,7 @@ import org.springframework.web.client.RestTemplate;
  */
 
 @Rest(rootUrl = "https://ws.audioscrobbler.com/2.0/", converters = {GsonHttpMessageConverter.class,
-        StringHttpMessageConverter.class})
+        StringHttpMessageConverter.class, FormHttpMessageConverter.class})
 public interface IRestClient {
 
     @Get("?method={method}&user={userName}&api_key={apiKey}&format={format}")
@@ -28,7 +28,7 @@ public interface IRestClient {
 
     @Post("?format=json")
     @Accept(MediaType.APPLICATION_JSON)
-    ResponseEntity<SessionData> login(LoginParams loginParams);
+    ResponseEntity<RecommendedArtists> getRecommendedArtists(String... params);
 
     RestTemplate getRestTemplate();
 }

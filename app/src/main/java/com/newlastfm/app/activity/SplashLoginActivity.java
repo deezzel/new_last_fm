@@ -13,6 +13,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.google.gson.Gson;
 import com.newlastfm.app.AppContext;
 import com.newlastfm.app.Constants;
 import com.newlastfm.app.MainActivity_;
@@ -37,8 +38,10 @@ import org.w3c.dom.Document;
 import org.w3c.dom.NodeList;
 import org.xml.sax.SAXException;
 
+import java.io.BufferedReader;
 import java.io.BufferedWriter;
 import java.io.IOException;
+import java.io.InputStreamReader;
 import java.io.OutputStream;
 import java.io.OutputStreamWriter;
 import java.net.HttpURLConnection;
@@ -72,6 +75,7 @@ public class SplashLoginActivity extends Activity implements Animation.Animation
     String apiSigRecommendedArtists;
     RequestResult<SessionData> result;
     String sk;
+    SessionData sessionData;
 
     @AfterViews
     void init() {
@@ -98,11 +102,11 @@ public class SplashLoginActivity extends Activity implements Animation.Animation
     }
 
     void doBackground() {
+        String jsonResponse = "";
         String urlString = Constants.apiUrl +
                 "method=" + "auth.getMobileSession" + "&password=" + password.getText().toString()
                 + "&username=" + login.getText().toString() + "&api_key" +
-                "=" + Constants.apiKey + "&api_sig=" + apiSig;
-        String resultToSend = "";
+                "=" + Constants.apiKey + "&api_sig=" + apiSig + "&format=json";
         try {
             URL url = new URL(Constants.apiUrl);
             HttpURLConnection urlConnection = (HttpURLConnection) url.openConnection();
@@ -118,7 +122,18 @@ public class SplashLoginActivity extends Activity implements Animation.Animation
             writer.close();
 
             int responseCode = urlConnection.getResponseCode();
-
+            if (responseCode == 200) {
+                BufferedReader br = new BufferedReader(new InputStreamReader(urlConnection.getInputStream()));
+                StringBuilder sb = new StringBuilder();
+                String line;
+                while ((line = br.readLine()) != null) {
+                    sb.append(line + "\n");
+                }
+                br.close();
+                jsonResponse = sb.toString();
+            }
+            Gson gson = new Gson();
+            sessionData = gson.fromJson(jsonResponse, SessionData.class);
             DocumentBuilderFactory documentBuilderFactory = DocumentBuilderFactory.newInstance();
             DocumentBuilder documentBuilder = documentBuilderFactory.newDocumentBuilder();
             Document document = documentBuilder.parse(urlConnection.getInputStream());
@@ -153,10 +168,12 @@ public class SplashLoginActivity extends Activity implements Animation.Animation
     void login() {
         apiSig = Utils.buildApiSig(Constants.apiKey, "auth.getMobileSession", password.getText().toString(),
                 login.getText().toString(), Constants.secret);
-        doBackground();
-        result = ctx.api.login(login.getText().toString(), password.getText().toString(), "auth.getMobileSession",
-                Constants.apiKey, apiSig);
-        apiSigRecommendedArtists = Utils.buildApiSig(Constants.apiKey, "user.getRecommendedArtists", sk, Constants.secret);
+        String params = "method=" + "auth.getMobileSession" + "&password=" + password.getText().toString()
+                + "&username=" + login.getText().toString() + "&api_key" +
+                "=" + Constants.apiKey + "&api_sig=" + apiSig + "&format=json";
+        sessionData = ctx.api.manualLogin(params);
+        apiSigRecommendedArtists = Utils.buildApiSig(Constants.apiKey, "user.getRecommendedArtists",
+                sessionData.getSession().getKey(), Constants.secret);
         Log.i(Constants.TAG, apiSigRecommendedArtists);
         storeUser();
     }
@@ -176,7 +193,7 @@ public class SplashLoginActivity extends Activity implements Animation.Animation
                 userData.getGender(),
                 userData.getRegistered().getText(),
                 userData.getPlaylists(),
-                sk
+                sessionData.getSession().getKey()
         );
         ctx.storage.update(user);
         afterLogin();
