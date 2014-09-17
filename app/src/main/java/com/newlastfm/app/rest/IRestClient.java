@@ -2,6 +2,7 @@ package com.newlastfm.app.rest;
 
 import com.newlastfm.model.RecommendedArtists;
 import com.newlastfm.model.UserData;
+import com.newlastfm.model.params.RecommendedArtistsParams;
 
 import org.androidannotations.annotations.rest.Accept;
 import org.androidannotations.annotations.rest.Get;
@@ -28,7 +29,7 @@ public interface IRestClient {
 
     @Post("?format=json")
     @Accept(MediaType.APPLICATION_JSON)
-    ResponseEntity<RecommendedArtists> getRecommendedArtists(String... params);
+    ResponseEntity<RecommendedArtists> getRecommendedArtists(RecommendedArtistsParams params);
 
     RestTemplate getRestTemplate();
 }

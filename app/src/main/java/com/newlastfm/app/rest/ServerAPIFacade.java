@@ -4,9 +4,11 @@ import android.util.Log;
 
 import com.google.gson.Gson;
 import com.newlastfm.app.Constants;
+import com.newlastfm.model.RecommendedArtists;
 import com.newlastfm.model.RequestError;
 import com.newlastfm.model.SessionData;
 import com.newlastfm.model.UserData;
+import com.newlastfm.model.params.RecommendedArtistsParams;
 
 import org.androidannotations.annotations.AfterInject;
 import org.androidannotations.annotations.EBean;
@@ -97,6 +99,59 @@ public class ServerAPIFacade {
             Log.i(Constants.TAG, "Success");
         }
         return result;
+    }
+
+    public RequestResult<RecommendedArtists> getRecommendedArtists(final String api_sig, final String api_key,
+                                                                   final String method, final String sk,
+                                                                   final String format) {
+        final RequestResult<RecommendedArtists> result = executeRequest(new Request<RecommendedArtists>() {
+            @Override
+            public ResponseEntity<RecommendedArtists> execute() {
+                return restClient.getRecommendedArtists(new RecommendedArtistsParams(api_sig, api_key, method, sk, format));
+            }
+        });
+        if (result.getRequestError() == null) {
+            Log.i(Constants.TAG, "Success");
+        }
+        return result;
+    }
+
+    public RecommendedArtists getRecommendedArtists(String params) {
+        RecommendedArtists recommendedArtists = null;
+        String jsonResponse = "";
+        try {
+            URL url = new URL(Constants.apiUrl);
+            HttpURLConnection urlConnection = (HttpURLConnection) url.openConnection();
+            urlConnection.setRequestMethod("POST");
+            urlConnection.setDoOutput(true);
+
+            OutputStream dataOutputStream = urlConnection.getOutputStream();
+
+            BufferedWriter writer = new BufferedWriter(new OutputStreamWriter(dataOutputStream));
+            writer.write(params);
+            writer.close();
+
+            int responseCode = urlConnection.getResponseCode();
+            if (responseCode == 200) {
+                BufferedReader br = new BufferedReader(new InputStreamReader(urlConnection.getInputStream()));
+                StringBuilder sb = new StringBuilder();
+                String line;
+                while ((line = br.readLine()) != null) {
+                    sb.append(line + "\n");
+                }
+                br.close();
+                jsonResponse = sb.toString();
+            }
+            Gson gson = new Gson();
+            recommendedArtists = gson.fromJson(jsonResponse, RecommendedArtists.class);
+        } catch (MalformedURLException e) {
+            e.printStackTrace();
+        } catch (ProtocolException e) {
+            e.printStackTrace();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        return recommendedArtists;
     }
 
     private boolean checkHttpStatus(HttpStatus status) {

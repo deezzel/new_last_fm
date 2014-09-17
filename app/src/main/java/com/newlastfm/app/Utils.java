@@ -53,10 +53,12 @@ public class Utils {
         return checksum;
     }
 
-    public static String buildApiSig(String apiKey, String apiMethod, String sessionKey, String apiSecret) {
+    public static String buildApiSig(String apiKey, String apiMethod, String sessionKey, String apiSecret,
+                                     String page, String limit) {
         String checksum = "";
         try {
-            String api_sig = "api_key" + apiKey + "method" + apiMethod + "sk" + sessionKey + apiSecret;
+            String api_sig = "api_key" + apiKey + "limit" + limit + "method" + apiMethod + "page" + page + "sk" +
+                    sessionKey + apiSecret;
             byte[] bytes = api_sig.getBytes("UTF-8");
             MessageDigest messageDigest = MessageDigest.getInstance("MD5");
             byte[] digest = messageDigest.digest(bytes);

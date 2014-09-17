@@ -6,13 +6,13 @@
 
     <ImageView
         android:id="@+id/imageCover"
-        android:layout_width="200dp"
-        android:layout_height="200dp"
+        android:layout_width="175dp"
+        android:layout_height="175dp"
         android:scaleType="centerCrop"/>
 
     <TextView
         android:id="@+id/textView"
-        android:layout_width="200dp"
+        android:layout_width="175dp"
         android:layout_height="70dp"
         android:layout_alignBottom="@+id/imageCover"
         android:layout_alignParentLeft="true"
@@ -21,26 +21,26 @@
 
     <TextView
         android:id="@+id/artistName"
-        android:layout_width="200dp"
+        android:layout_width="175dp"
         android:layout_height="wrap_content"
         android:layout_alignParentLeft="true"
         android:layout_alignParentStart="true"
         android:layout_alignTop="@+id/textView"
         android:text="Dead by April"
         android:textColor="@android:color/white"
-        android:textSize="18dp"
+        android:textSize="16dp"
         android:textStyle="bold"/>
 
     <TextView
         android:id="@+id/similarArtists"
-        android:layout_width="200dp"
+        android:layout_width="175dp"
         android:layout_height="wrap_content"
         android:layout_alignBottom="@+id/textView"
         android:layout_alignParentLeft="true"
         android:layout_alignParentStart="true"
         android:text="Similar to Sonic Syndicate and Hollywood Undead"
         android:textColor="@android:color/white"
-        android:textSize="16dp"/>
+        android:textSize="13dp"/>
 
     <RelativeLayout
         android:id="@+id/relativeLayout3"

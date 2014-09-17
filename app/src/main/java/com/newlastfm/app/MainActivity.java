@@ -21,8 +21,8 @@ import android.widget.TextView;
 import com.newlastfm.app.adapter.NavDrawerListAdapter;
 import com.newlastfm.app.db.DatabaseHelper;
 import com.newlastfm.app.ui.FriendsFragment;
-import com.newlastfm.app.ui.HomeFragment;
-import com.newlastfm.app.ui.LibraryFragment;
+import com.newlastfm.app.ui.HomeFragment_;
+import com.newlastfm.app.ui.LibraryFragment_;
 import com.newlastfm.app.ui.MessagesFragment;
 import com.newlastfm.app.ui.SettingsFragment;
 import com.newlastfm.app.ui.drawer.NavDrawerItem;
@@ -232,10 +232,10 @@ public class MainActivity extends Activity {
         Fragment fragment = null;
         switch (position) {
             case 0:
-                fragment = new HomeFragment();
+                fragment = new HomeFragment_();
                 break;
             case 1:
-                fragment = new LibraryFragment();
+                fragment = new LibraryFragment_();
                 break;
             case 2:
                 fragment = new FriendsFragment();
