@@ -50,6 +50,7 @@
         android:layout_alignRight="@+id/imageCover">
 
         <ImageView
+            android:id="@+id/similarArtistCover2Bg"
             android:layout_width="50dp"
             android:layout_height="50dp"
             android:layout_centerInParent="true"

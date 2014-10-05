@@ -63,6 +63,7 @@ public class RecommendedArtistsListAdapter extends ArrayAdapter<ParentArtist> {
             holder.similarArtists = (TextView) convertView.findViewById(R.id.similarArtists);
             holder.similarArtistCover1 = (RoundedImageView) convertView.findViewById(R.id.similarArtistCover1);
             holder.similarArtistCover2 = (RoundedImageView) convertView.findViewById(R.id.similarArtistCover2);
+            holder.similarArtistCover2Bg = (ImageView) convertView.findViewById(R.id.similarArtistCover2Bg);
 
             convertView.setTag(holder);
         } else {
@@ -79,6 +80,7 @@ public class RecommendedArtistsListAdapter extends ArrayAdapter<ParentArtist> {
         public TextView similarArtists;
         public RoundedImageView similarArtistCover1;
         public RoundedImageView similarArtistCover2;
+        public ImageView similarArtistCover2Bg;
 
         void populate(ParentArtist artist) {
             imageLoader.displayImage(artist.getImage().get(3).getText(), imageCover);
@@ -92,8 +94,14 @@ public class RecommendedArtistsListAdapter extends ArrayAdapter<ParentArtist> {
                 }
             }
             similarArtists.setText(similar);
-            imageLoader.displayImage(artist.getContext().getArtists().get(0).getImage().get(2).getText(), similarArtistCover1);
-            imageLoader.displayImage(artist.getContext().getArtists().get(1).getImage().get(2).getText(), similarArtistCover2);
+            if (artist.getContext().getArtists().size() > 1) {
+                imageLoader.displayImage(artist.getContext().getArtists().get(0).getImage().get(2).getText(), similarArtistCover1);
+                imageLoader.displayImage(artist.getContext().getArtists().get(1).getImage().get(2).getText(), similarArtistCover2);
+            } else if (artist.getContext().getArtists().size() == 1) {
+                imageLoader.displayImage(artist.getContext().getArtists().get(0).getImage().get(2).getText(), similarArtistCover1);
+                similarArtistCover2.setVisibility(View.INVISIBLE);
+                similarArtistCover2Bg.setVisibility(View.INVISIBLE);
+            }
         }
     }
 }
