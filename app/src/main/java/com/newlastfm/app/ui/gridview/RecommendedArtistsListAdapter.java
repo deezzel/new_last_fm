@@ -97,8 +97,8 @@ public class RecommendedArtistsListAdapter extends ArrayAdapter<ParentArtist> {
             if (artist.getContext().getArtists().size() > 1) {
                 imageLoader.displayImage(artist.getContext().getArtists().get(0).getImage().get(2).getText(), similarArtistCover1);
                 imageLoader.displayImage(artist.getContext().getArtists().get(1).getImage().get(2).getText(), similarArtistCover2);
-            } else if (artist.getContext().getArtists().size() == 1) {
-                imageLoader.displayImage(artist.getContext().getArtists().get(0).getImage().get(2).getText(), similarArtistCover1);
+            } else if (artist.getContext().getArtists().size() == 0) {
+                imageLoader.displayImage(artist.getContext().getArtist().getImage().get(2).getText(), similarArtistCover1);
                 similarArtistCover2.setVisibility(View.INVISIBLE);
                 similarArtistCover2Bg.setVisibility(View.INVISIBLE);
             }
