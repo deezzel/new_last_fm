@@ -18,6 +18,8 @@ import org.androidannotations.annotations.EFragment;
 import org.androidannotations.annotations.UiThread;
 import org.androidannotations.annotations.ViewById;
 
+import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 /**
@@ -31,7 +33,7 @@ public class HomeFragment extends Fragment {
     @ViewById(R.id.recommendations)
     GridView recommendationsGridView;
     RecommendedArtists recommendedArtists;
-    List<RecommendedArtists.ParentArtist> artists;
+    List<RecommendedArtists.ParentArtist> artists = new ArrayList<RecommendedArtists.ParentArtist>();
     String apiSigRecommendedArtists;
     RecommendedArtistsListAdapter recommendedArtistsListAdapter;
 
@@ -47,17 +49,21 @@ public class HomeFragment extends Fragment {
     @Background
     void getRecommendedArtists() {
         apiSigRecommendedArtists = Utils.buildApiSig(Constants.apiKey, "user.getRecommendedArtists",
-                ctx.storage.getUser().sk, Constants.secret, "1", "4");
+                ctx.storage.getUser().sk, Constants.secret, "1", "50");
         String params = "api_sig=" + apiSigRecommendedArtists + "&api_key=" + Constants.apiKey + "&method=user.getRecommendedArtists" +
-                "&sk=" + ctx.storage.getUser().sk + "&page=1&limit=4" + "&format=json";
+                "&sk=" + ctx.storage.getUser().sk + "&page=1&limit=50" + "&format=json";
         recommendedArtists = ctx.api.getRecommendedArtists(params);
         initViews();
     }
 
     @UiThread
     void initViews() {
-        recommendedArtistsListAdapter = new RecommendedArtistsListAdapter(getActivity(),
-                recommendedArtists.getRecommendations().getArtist());
+        List<RecommendedArtists.ParentArtist> parentArtists = recommendedArtists.getRecommendations().getArtist();
+        Collections.shuffle(parentArtists);
+        for (int i = 0; i < 4; i++) {
+            artists.add(parentArtists.get(i));
+        }
+        recommendedArtistsListAdapter = new RecommendedArtistsListAdapter(getActivity(), artists);
         recommendationsGridView.setAdapter(recommendedArtistsListAdapter);
     }
 }

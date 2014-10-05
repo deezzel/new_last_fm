@@ -1,7 +1,9 @@
 package com.newlastfm.gson;
 
 import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
 import com.newlastfm.model.RecommendedArtists;
+import com.newlastfm.model.gson.RecommendedArtistsDeserializer;
 
 import org.junit.Test;
 
@@ -15,6 +17,358 @@ public class GSONRecommendedArtistsTest {
     String jsonString = "{\n" +
             "    \"recommendations\": {\n" +
             "        \"artist\": [\n" +
+            "            {\n" +
+            "                \"name\": \"Tarja\",\n" +
+            "                \"mbid\": \"a1e626f0-ed1f-444a-af2e-86aeae6651e4\",\n" +
+            "                \"url\": \"http://www.last.fm/music/Tarja\",\n" +
+            "                \"streamable\": \"0\",\n" +
+            "                \"image\": [\n" +
+            "                    {\n" +
+            "                        \"#text\": \"http://userserve-ak.last.fm/serve/34/70893024.png\",\n" +
+            "                        \"size\": \"small\"\n" +
+            "                    },\n" +
+            "                    {\n" +
+            "                        \"#text\": \"http://userserve-ak.last.fm/serve/64/70893024.png\",\n" +
+            "                        \"size\": \"medium\"\n" +
+            "                    },\n" +
+            "                    {\n" +
+            "                        \"#text\": \"http://userserve-ak.last.fm/serve/126/70893024.png\",\n" +
+            "                        \"size\": \"large\"\n" +
+            "                    },\n" +
+            "                    {\n" +
+            "                        \"#text\": \"http://userserve-ak.last.fm/serve/252/70893024.png\",\n" +
+            "                        \"size\": \"extralarge\"\n" +
+            "                    },\n" +
+            "                    {\n" +
+            "                        \"#text\": \"http://userserve-ak.last.fm/serve/_/70893024/Tarja+TH+PNGHQ.png\",\n" +
+            "                        \"size\": \"mega\"\n" +
+            "                    }\n" +
+            "                ],\n" +
+            "                \"context\": {\n" +
+            "                    \"artist\": [\n" +
+            "                        {\n" +
+            "                            \"name\": \"Nightwish\",\n" +
+            "                            \"mbid\": \"00a9f935-ba93-4fc8-a33a-993abe9c936b\",\n" +
+            "                            \"url\": \"http://www.last.fm/music/Nightwish\",\n" +
+            "                            \"streamable\": \"0\",\n" +
+            "                            \"image\": [\n" +
+            "                                {\n" +
+            "                                    \"#text\": \"http://userserve-ak.last.fm/serve/34/46142261.png\",\n" +
+            "                                    \"size\": \"small\"\n" +
+            "                                },\n" +
+            "                                {\n" +
+            "                                    \"#text\": \"http://userserve-ak.last.fm/serve/64/46142261.png\",\n" +
+            "                                    \"size\": \"medium\"\n" +
+            "                                },\n" +
+            "                                {\n" +
+            "                                    \"#text\": \"http://userserve-ak.last.fm/serve/126/46142261.png\",\n" +
+            "                                    \"size\": \"large\"\n" +
+            "                                },\n" +
+            "                                {\n" +
+            "                                    \"#text\": \"http://userserve-ak.last.fm/serve/252/46142261.png\",\n" +
+            "                                    \"size\": \"extralarge\"\n" +
+            "                                },\n" +
+            "                                {\n" +
+            "                                    \"#text\": \"http://userserve-ak.last.fm/serve/500/46142261/Nightwish++930s.png\",\n" +
+            "                                    \"size\": \"mega\"\n" +
+            "                                }\n" +
+            "                            ]\n" +
+            "                        },\n" +
+            "                        {\n" +
+            "                            \"name\": \"Delain\",\n" +
+            "                            \"mbid\": \"3b0e8f01-3fd9-4104-9532-1e4b526ce562\",\n" +
+            "                            \"url\": \"http://www.last.fm/music/Delain\",\n" +
+            "                            \"streamable\": \"0\",\n" +
+            "                            \"image\": [\n" +
+            "                                {\n" +
+            "                                    \"#text\": \"http://userserve-ak.last.fm/serve/34/98332301.png\",\n" +
+            "                                    \"size\": \"small\"\n" +
+            "                                },\n" +
+            "                                {\n" +
+            "                                    \"#text\": \"http://userserve-ak.last.fm/serve/64/98332301.png\",\n" +
+            "                                    \"size\": \"medium\"\n" +
+            "                                },\n" +
+            "                                {\n" +
+            "                                    \"#text\": \"http://userserve-ak.last.fm/serve/126/98332301.png\",\n" +
+            "                                    \"size\": \"large\"\n" +
+            "                                },\n" +
+            "                                {\n" +
+            "                                    \"#text\": \"http://userserve-ak.last.fm/serve/252/98332301.png\",\n" +
+            "                                    \"size\": \"extralarge\"\n" +
+            "                                },\n" +
+            "                                {\n" +
+            "                                    \"#text\": \"http://userserve-ak.last.fm/serve/_/98332301/Delain+THE+HUMAN+CONTRADICTION.png\",\n" +
+            "                                    \"size\": \"mega\"\n" +
+            "                                }\n" +
+            "                            ]\n" +
+            "                        }\n" +
+            "                    ]\n" +
+            "                }\n" +
+            "            },\n" +
+            "            {\n" +
+            "                \"name\": \"Emigrate\",\n" +
+            "                \"mbid\": \"1945e27b-5b00-4dc7-bd0a-7c653cb68f45\",\n" +
+            "                \"url\": \"http://www.last.fm/music/Emigrate\",\n" +
+            "                \"streamable\": \"0\",\n" +
+            "                \"image\": [\n" +
+            "                    {\n" +
+            "                        \"#text\": \"http://userserve-ak.last.fm/serve/34/3071876.jpg\",\n" +
+            "                        \"size\": \"small\"\n" +
+            "                    },\n" +
+            "                    {\n" +
+            "                        \"#text\": \"http://userserve-ak.last.fm/serve/64/3071876.jpg\",\n" +
+            "                        \"size\": \"medium\"\n" +
+            "                    },\n" +
+            "                    {\n" +
+            "                        \"#text\": \"http://userserve-ak.last.fm/serve/126/3071876.jpg\",\n" +
+            "                        \"size\": \"large\"\n" +
+            "                    },\n" +
+            "                    {\n" +
+            "                        \"#text\": \"http://userserve-ak.last.fm/serve/252/3071876.jpg\",\n" +
+            "                        \"size\": \"extralarge\"\n" +
+            "                    },\n" +
+            "                    {\n" +
+            "                        \"#text\": \"http://userserve-ak.last.fm/serve/_/3071876/Emigrate+rich124.jpg\",\n" +
+            "                        \"size\": \"mega\"\n" +
+            "                    }\n" +
+            "                ],\n" +
+            "                \"context\": {\n" +
+            "                    \"artist\": [\n" +
+            "                        {\n" +
+            "                            \"name\": \"Oomph!\",\n" +
+            "                            \"mbid\": \"174e4bad-247f-4a6c-95e0-09891a7ffb75\",\n" +
+            "                            \"url\": \"http://www.last.fm/music/Oomph!\",\n" +
+            "                            \"streamable\": \"0\",\n" +
+            "                            \"image\": [\n" +
+            "                                {\n" +
+            "                                    \"#text\": \"http://userserve-ak.last.fm/serve/34/10160771.jpg\",\n" +
+            "                                    \"size\": \"small\"\n" +
+            "                                },\n" +
+            "                                {\n" +
+            "                                    \"#text\": \"http://userserve-ak.last.fm/serve/64/10160771.jpg\",\n" +
+            "                                    \"size\": \"medium\"\n" +
+            "                                },\n" +
+            "                                {\n" +
+            "                                    \"#text\": \"http://userserve-ak.last.fm/serve/126/10160771.jpg\",\n" +
+            "                                    \"size\": \"large\"\n" +
+            "                                },\n" +
+            "                                {\n" +
+            "                                    \"#text\": \"http://userserve-ak.last.fm/serve/252/10160771.jpg\",\n" +
+            "                                    \"size\": \"extralarge\"\n" +
+            "                                },\n" +
+            "                                {\n" +
+            "                                    \"#text\": \"http://userserve-ak.last.fm/serve/_/10160771/Oomph++Monster2.jpg\",\n" +
+            "                                    \"size\": \"mega\"\n" +
+            "                                }\n" +
+            "                            ]\n" +
+            "                        },\n" +
+            "                        {\n" +
+            "                            \"name\": \"Rammstein\",\n" +
+            "                            \"mbid\": \"b2d122f9-eadb-4930-a196-8f221eeb0c66\",\n" +
+            "                            \"url\": \"http://www.last.fm/music/Rammstein\",\n" +
+            "                            \"streamable\": \"0\",\n" +
+            "                            \"image\": [\n" +
+            "                                {\n" +
+            "                                    \"#text\": \"http://userserve-ak.last.fm/serve/34/2384765.jpg\",\n" +
+            "                                    \"size\": \"small\"\n" +
+            "                                },\n" +
+            "                                {\n" +
+            "                                    \"#text\": \"http://userserve-ak.last.fm/serve/64/2384765.jpg\",\n" +
+            "                                    \"size\": \"medium\"\n" +
+            "                                },\n" +
+            "                                {\n" +
+            "                                    \"#text\": \"http://userserve-ak.last.fm/serve/126/2384765.jpg\",\n" +
+            "                                    \"size\": \"large\"\n" +
+            "                                },\n" +
+            "                                {\n" +
+            "                                    \"#text\": \"http://userserve-ak.last.fm/serve/252/2384765.jpg\",\n" +
+            "                                    \"size\": \"extralarge\"\n" +
+            "                                },\n" +
+            "                                {\n" +
+            "                                    \"#text\": \"http://userserve-ak.last.fm/serve/_/2384765/Rammstein+bm.jpg\",\n" +
+            "                                    \"size\": \"mega\"\n" +
+            "                                }\n" +
+            "                            ]\n" +
+            "                        }\n" +
+            "                    ]\n" +
+            "                }\n" +
+            "            },\n" +
+            "            {\n" +
+            "                \"name\": \"Epica\",\n" +
+            "                \"mbid\": \"21985b14-1b0d-44fe-b357-310b29bba510\",\n" +
+            "                \"url\": \"http://www.last.fm/music/Epica\",\n" +
+            "                \"streamable\": \"0\",\n" +
+            "                \"image\": [\n" +
+            "                    {\n" +
+            "                        \"#text\": \"http://userserve-ak.last.fm/serve/34/97476819.png\",\n" +
+            "                        \"size\": \"small\"\n" +
+            "                    },\n" +
+            "                    {\n" +
+            "                        \"#text\": \"http://userserve-ak.last.fm/serve/64/97476819.png\",\n" +
+            "                        \"size\": \"medium\"\n" +
+            "                    },\n" +
+            "                    {\n" +
+            "                        \"#text\": \"http://userserve-ak.last.fm/serve/126/97476819.png\",\n" +
+            "                        \"size\": \"large\"\n" +
+            "                    },\n" +
+            "                    {\n" +
+            "                        \"#text\": \"http://userserve-ak.last.fm/serve/252/97476819.png\",\n" +
+            "                        \"size\": \"extralarge\"\n" +
+            "                    },\n" +
+            "                    {\n" +
+            "                        \"#text\": \"http://userserve-ak.last.fm/serve/500/97476819/Epica+The+Quantum+Enigma+2014++PNG.png\",\n" +
+            "                        \"size\": \"mega\"\n" +
+            "                    }\n" +
+            "                ],\n" +
+            "                \"context\": {\n" +
+            "                    \"artist\": [\n" +
+            "                        {\n" +
+            "                            \"name\": \"Nightwish\",\n" +
+            "                            \"mbid\": \"00a9f935-ba93-4fc8-a33a-993abe9c936b\",\n" +
+            "                            \"url\": \"http://www.last.fm/music/Nightwish\",\n" +
+            "                            \"streamable\": \"0\",\n" +
+            "                            \"image\": [\n" +
+            "                                {\n" +
+            "                                    \"#text\": \"http://userserve-ak.last.fm/serve/34/46142261.png\",\n" +
+            "                                    \"size\": \"small\"\n" +
+            "                                },\n" +
+            "                                {\n" +
+            "                                    \"#text\": \"http://userserve-ak.last.fm/serve/64/46142261.png\",\n" +
+            "                                    \"size\": \"medium\"\n" +
+            "                                },\n" +
+            "                                {\n" +
+            "                                    \"#text\": \"http://userserve-ak.last.fm/serve/126/46142261.png\",\n" +
+            "                                    \"size\": \"large\"\n" +
+            "                                },\n" +
+            "                                {\n" +
+            "                                    \"#text\": \"http://userserve-ak.last.fm/serve/252/46142261.png\",\n" +
+            "                                    \"size\": \"extralarge\"\n" +
+            "                                },\n" +
+            "                                {\n" +
+            "                                    \"#text\": \"http://userserve-ak.last.fm/serve/500/46142261/Nightwish++930s.png\",\n" +
+            "                                    \"size\": \"mega\"\n" +
+            "                                }\n" +
+            "                            ]\n" +
+            "                        },\n" +
+            "                        {\n" +
+            "                            \"name\": \"Delain\",\n" +
+            "                            \"mbid\": \"3b0e8f01-3fd9-4104-9532-1e4b526ce562\",\n" +
+            "                            \"url\": \"http://www.last.fm/music/Delain\",\n" +
+            "                            \"streamable\": \"0\",\n" +
+            "                            \"image\": [\n" +
+            "                                {\n" +
+            "                                    \"#text\": \"http://userserve-ak.last.fm/serve/34/98332301.png\",\n" +
+            "                                    \"size\": \"small\"\n" +
+            "                                },\n" +
+            "                                {\n" +
+            "                                    \"#text\": \"http://userserve-ak.last.fm/serve/64/98332301.png\",\n" +
+            "                                    \"size\": \"medium\"\n" +
+            "                                },\n" +
+            "                                {\n" +
+            "                                    \"#text\": \"http://userserve-ak.last.fm/serve/126/98332301.png\",\n" +
+            "                                    \"size\": \"large\"\n" +
+            "                                },\n" +
+            "                                {\n" +
+            "                                    \"#text\": \"http://userserve-ak.last.fm/serve/252/98332301.png\",\n" +
+            "                                    \"size\": \"extralarge\"\n" +
+            "                                },\n" +
+            "                                {\n" +
+            "                                    \"#text\": \"http://userserve-ak.last.fm/serve/_/98332301/Delain+THE+HUMAN+CONTRADICTION.png\",\n" +
+            "                                    \"size\": \"mega\"\n" +
+            "                                }\n" +
+            "                            ]\n" +
+            "                        }\n" +
+            "                    ]\n" +
+            "                }\n" +
+            "            },\n" +
+            "            {\n" +
+            "                \"name\": \"Fort Minor\",\n" +
+            "                \"mbid\": \"e1564e98-978b-4947-8698-f6fd6f8b0181\",\n" +
+            "                \"url\": \"http://www.last.fm/music/Fort+Minor\",\n" +
+            "                \"streamable\": \"0\",\n" +
+            "                \"image\": [\n" +
+            "                    {\n" +
+            "                        \"#text\": \"http://userserve-ak.last.fm/serve/34/173696.jpg\",\n" +
+            "                        \"size\": \"small\"\n" +
+            "                    },\n" +
+            "                    {\n" +
+            "                        \"#text\": \"http://userserve-ak.last.fm/serve/64/173696.jpg\",\n" +
+            "                        \"size\": \"medium\"\n" +
+            "                    },\n" +
+            "                    {\n" +
+            "                        \"#text\": \"http://userserve-ak.last.fm/serve/126/173696.jpg\",\n" +
+            "                        \"size\": \"large\"\n" +
+            "                    },\n" +
+            "                    {\n" +
+            "                        \"#text\": \"http://userserve-ak.last.fm/serve/252/173696.jpg\",\n" +
+            "                        \"size\": \"extralarge\"\n" +
+            "                    },\n" +
+            "                    {\n" +
+            "                        \"#text\": \"http://userserve-ak.last.fm/serve/500/173696/Fort+Minor.jpg\",\n" +
+            "                        \"size\": \"mega\"\n" +
+            "                    }\n" +
+            "                ],\n" +
+            "                \"context\": {\n" +
+            "                    \"artist\": [\n" +
+            "                        {\n" +
+            "                            \"name\": \"Linkin Park\",\n" +
+            "                            \"mbid\": \"f59c5520-5f46-4d2c-b2c4-822eabf53419\",\n" +
+            "                            \"url\": \"http://www.last.fm/music/Linkin+Park\",\n" +
+            "                            \"streamable\": \"0\",\n" +
+            "                            \"image\": [\n" +
+            "                                {\n" +
+            "                                    \"#text\": \"http://userserve-ak.last.fm/serve/34/181147.jpg\",\n" +
+            "                                    \"size\": \"small\"\n" +
+            "                                },\n" +
+            "                                {\n" +
+            "                                    \"#text\": \"http://userserve-ak.last.fm/serve/64/181147.jpg\",\n" +
+            "                                    \"size\": \"medium\"\n" +
+            "                                },\n" +
+            "                                {\n" +
+            "                                    \"#text\": \"http://userserve-ak.last.fm/serve/126/181147.jpg\",\n" +
+            "                                    \"size\": \"large\"\n" +
+            "                                },\n" +
+            "                                {\n" +
+            "                                    \"#text\": \"http://userserve-ak.last.fm/serve/252/181147.jpg\",\n" +
+            "                                    \"size\": \"extralarge\"\n" +
+            "                                },\n" +
+            "                                {\n" +
+            "                                    \"#text\": \"http://userserve-ak.last.fm/serve/500/181147/Linkin+Park.jpg\",\n" +
+            "                                    \"size\": \"mega\"\n" +
+            "                                }\n" +
+            "                            ]\n" +
+            "                        },\n" +
+            "                        {\n" +
+            "                            \"name\": \"Limp Bizkit\",\n" +
+            "                            \"mbid\": \"8f9d6bb2-dba4-4cca-9967-cc02b9f4820c\",\n" +
+            "                            \"url\": \"http://www.last.fm/music/Limp+Bizkit\",\n" +
+            "                            \"streamable\": \"0\",\n" +
+            "                            \"image\": [\n" +
+            "                                {\n" +
+            "                                    \"#text\": \"http://userserve-ak.last.fm/serve/34/243581.jpg\",\n" +
+            "                                    \"size\": \"small\"\n" +
+            "                                },\n" +
+            "                                {\n" +
+            "                                    \"#text\": \"http://userserve-ak.last.fm/serve/64/243581.jpg\",\n" +
+            "                                    \"size\": \"medium\"\n" +
+            "                                },\n" +
+            "                                {\n" +
+            "                                    \"#text\": \"http://userserve-ak.last.fm/serve/126/243581.jpg\",\n" +
+            "                                    \"size\": \"large\"\n" +
+            "                                },\n" +
+            "                                {\n" +
+            "                                    \"#text\": \"http://userserve-ak.last.fm/serve/252/243581.jpg\",\n" +
+            "                                    \"size\": \"extralarge\"\n" +
+            "                                },\n" +
+            "                                {\n" +
+            "                                    \"#text\": \"http://userserve-ak.last.fm/serve/_/243581/Limp+Bizkit.jpg\",\n" +
+            "                                    \"size\": \"mega\"\n" +
+            "                                }\n" +
+            "                            ]\n" +
+            "                        }\n" +
+            "                    ]\n" +
+            "                }\n" +
+            "            },\n" +
             "            {\n" +
             "                \"name\": \"Dead by April\",\n" +
             "                \"mbid\": \"5578d1ad-02db-4b17-ada1-32d1aa4efd49\",\n" +
@@ -43,7 +397,7 @@ public class GSONRecommendedArtistsTest {
             "                    }\n" +
             "                ],\n" +
             "                \"context\": {\n" +
-            "                    \"artist\": [\n" +
+            "                    \"artist\": \n" +
             "                        {\n" +
             "                            \"name\": \"Sonic Syndicate\",\n" +
             "                            \"mbid\": \"10a402b7-0e50-4479-b007-9cfdd5eaa287\",\n" +
@@ -71,388 +425,7 @@ public class GSONRecommendedArtistsTest {
             "                                    \"size\": \"mega\"\n" +
             "                                }\n" +
             "                            ]\n" +
-            "                        },\n" +
-            "                        {\n" +
-            "                            \"name\": \"Hollywood Undead\",\n" +
-            "                            \"mbid\": \"321fdfbb-426b-43f7-8295-fa9aca6348d9\",\n" +
-            "                            \"url\": \"http://www.last.fm/music/Hollywood+Undead\",\n" +
-            "                            \"streamable\": \"0\",\n" +
-            "                            \"image\": [\n" +
-            "                                {\n" +
-            "                                    \"#text\": \"http://userserve-ak.last.fm/serve/34/58156137.jpg\",\n" +
-            "                                    \"size\": \"small\"\n" +
-            "                                },\n" +
-            "                                {\n" +
-            "                                    \"#text\": \"http://userserve-ak.last.fm/serve/64/58156137.jpg\",\n" +
-            "                                    \"size\": \"medium\"\n" +
-            "                                },\n" +
-            "                                {\n" +
-            "                                    \"#text\": \"http://userserve-ak.last.fm/serve/126/58156137.jpg\",\n" +
-            "                                    \"size\": \"large\"\n" +
-            "                                },\n" +
-            "                                {\n" +
-            "                                    \"#text\": \"http://userserve-ak.last.fm/serve/252/58156137.jpg\",\n" +
-            "                                    \"size\": \"extralarge\"\n" +
-            "                                },\n" +
-            "                                {\n" +
-            "                                    \"#text\": \"http://userserve-ak.last.fm/serve/500/58156137/Hollywood+Undead+HUATPROMO3.jpg\",\n" +
-            "                                    \"size\": \"mega\"\n" +
-            "                                }\n" +
-            "                            ]\n" +
             "                        }\n" +
-            "                    ]\n" +
-            "                }\n" +
-            "            },\n" +
-            "            {\n" +
-            "                \"name\": \"Emigrate\",\n" +
-            "                \"mbid\": \"1945e27b-5b00-4dc7-bd0a-7c653cb68f45\",\n" +
-            "                \"url\": \"http://www.last.fm/music/Emigrate\",\n" +
-            "                \"streamable\": \"0\",\n" +
-            "                \"image\": [\n" +
-            "                    {\n" +
-            "                        \"#text\": \"http://userserve-ak.last.fm/serve/34/2148989.jpg\",\n" +
-            "                        \"size\": \"small\"\n" +
-            "                    },\n" +
-            "                    {\n" +
-            "                        \"#text\": \"http://userserve-ak.last.fm/serve/64/2148989.jpg\",\n" +
-            "                        \"size\": \"medium\"\n" +
-            "                    },\n" +
-            "                    {\n" +
-            "                        \"#text\": \"http://userserve-ak.last.fm/serve/126/2148989.jpg\",\n" +
-            "                        \"size\": \"large\"\n" +
-            "                    },\n" +
-            "                    {\n" +
-            "                        \"#text\": \"http://userserve-ak.last.fm/serve/252/2148989.jpg\",\n" +
-            "                        \"size\": \"extralarge\"\n" +
-            "                    },\n" +
-            "                    {\n" +
-            "                        \"#text\": \"http://userserve-ak.last.fm/serve/_/2148989/Emigrate.jpg\",\n" +
-            "                        \"size\": \"mega\"\n" +
-            "                    }\n" +
-            "                ],\n" +
-            "                \"context\": {\n" +
-            "                    \"artist\": [\n" +
-            "                        {\n" +
-            "                            \"name\": \"Oomph!\",\n" +
-            "                            \"mbid\": \"174e4bad-247f-4a6c-95e0-09891a7ffb75\",\n" +
-            "                            \"url\": \"http://www.last.fm/music/Oomph!\",\n" +
-            "                            \"streamable\": \"0\",\n" +
-            "                            \"image\": [\n" +
-            "                                {\n" +
-            "                                    \"#text\": \"http://userserve-ak.last.fm/serve/34/351912.jpg\",\n" +
-            "                                    \"size\": \"small\"\n" +
-            "                                },\n" +
-            "                                {\n" +
-            "                                    \"#text\": \"http://userserve-ak.last.fm/serve/64/351912.jpg\",\n" +
-            "                                    \"size\": \"medium\"\n" +
-            "                                },\n" +
-            "                                {\n" +
-            "                                    \"#text\": \"http://userserve-ak.last.fm/serve/126/351912.jpg\",\n" +
-            "                                    \"size\": \"large\"\n" +
-            "                                },\n" +
-            "                                {\n" +
-            "                                    \"#text\": \"http://userserve-ak.last.fm/serve/252/351912.jpg\",\n" +
-            "                                    \"size\": \"extralarge\"\n" +
-            "                                },\n" +
-            "                                {\n" +
-            "                                    \"#text\": \"http://userserve-ak.last.fm/serve/_/351912/Oomph.jpg\",\n" +
-            "                                    \"size\": \"mega\"\n" +
-            "                                }\n" +
-            "                            ]\n" +
-            "                        },\n" +
-            "                        {\n" +
-            "                            \"name\": \"Rammstein\",\n" +
-            "                            \"mbid\": \"b2d122f9-eadb-4930-a196-8f221eeb0c66\",\n" +
-            "                            \"url\": \"http://www.last.fm/music/Rammstein\",\n" +
-            "                            \"streamable\": \"0\",\n" +
-            "                            \"image\": [\n" +
-            "                                {\n" +
-            "                                    \"#text\": \"http://userserve-ak.last.fm/serve/34/2385014.jpg\",\n" +
-            "                                    \"size\": \"small\"\n" +
-            "                                },\n" +
-            "                                {\n" +
-            "                                    \"#text\": \"http://userserve-ak.last.fm/serve/64/2385014.jpg\",\n" +
-            "                                    \"size\": \"medium\"\n" +
-            "                                },\n" +
-            "                                {\n" +
-            "                                    \"#text\": \"http://userserve-ak.last.fm/serve/126/2385014.jpg\",\n" +
-            "                                    \"size\": \"large\"\n" +
-            "                                },\n" +
-            "                                {\n" +
-            "                                    \"#text\": \"http://userserve-ak.last.fm/serve/252/2385014.jpg\",\n" +
-            "                                    \"size\": \"extralarge\"\n" +
-            "                                },\n" +
-            "                                {\n" +
-            "                                    \"#text\": \"http://userserve-ak.last.fm/serve/500/2385014/Rammstein+ramm_ruins.jpg\",\n" +
-            "                                    \"size\": \"mega\"\n" +
-            "                                }\n" +
-            "                            ]\n" +
-            "                        }\n" +
-            "                    ]\n" +
-            "                }\n" +
-            "            },\n" +
-            "            {\n" +
-            "                \"name\": \"Atreyu\",\n" +
-            "                \"mbid\": \"17e137fb-59e5-4fd7-af48-afc34995396c\",\n" +
-            "                \"url\": \"http://www.last.fm/music/Atreyu\",\n" +
-            "                \"streamable\": \"0\",\n" +
-            "                \"image\": [\n" +
-            "                    {\n" +
-            "                        \"#text\": \"http://userserve-ak.last.fm/serve/34/41551041.jpg\",\n" +
-            "                        \"size\": \"small\"\n" +
-            "                    },\n" +
-            "                    {\n" +
-            "                        \"#text\": \"http://userserve-ak.last.fm/serve/64/41551041.jpg\",\n" +
-            "                        \"size\": \"medium\"\n" +
-            "                    },\n" +
-            "                    {\n" +
-            "                        \"#text\": \"http://userserve-ak.last.fm/serve/126/41551041.jpg\",\n" +
-            "                        \"size\": \"large\"\n" +
-            "                    },\n" +
-            "                    {\n" +
-            "                        \"#text\": \"http://userserve-ak.last.fm/serve/252/41551041.jpg\",\n" +
-            "                        \"size\": \"extralarge\"\n" +
-            "                    },\n" +
-            "                    {\n" +
-            "                        \"#text\": \"http://userserve-ak.last.fm/serve/500/41551041/Atreyu.jpg\",\n" +
-            "                        \"size\": \"mega\"\n" +
-            "                    }\n" +
-            "                ],\n" +
-            "                \"context\": {\n" +
-            "                    \"artist\": [\n" +
-            "                        {\n" +
-            "                            \"name\": \"Sonic Syndicate\",\n" +
-            "                            \"mbid\": \"10a402b7-0e50-4479-b007-9cfdd5eaa287\",\n" +
-            "                            \"url\": \"http://www.last.fm/music/Sonic+Syndicate\",\n" +
-            "                            \"streamable\": \"0\",\n" +
-            "                            \"image\": [\n" +
-            "                                {\n" +
-            "                                    \"#text\": \"http://userserve-ak.last.fm/serve/34/98508579.jpg\",\n" +
-            "                                    \"size\": \"small\"\n" +
-            "                                },\n" +
-            "                                {\n" +
-            "                                    \"#text\": \"http://userserve-ak.last.fm/serve/64/98508579.jpg\",\n" +
-            "                                    \"size\": \"medium\"\n" +
-            "                                },\n" +
-            "                                {\n" +
-            "                                    \"#text\": \"http://userserve-ak.last.fm/serve/126/98508579.jpg\",\n" +
-            "                                    \"size\": \"large\"\n" +
-            "                                },\n" +
-            "                                {\n" +
-            "                                    \"#text\": \"http://userserve-ak.last.fm/serve/252/98508579.jpg\",\n" +
-            "                                    \"size\": \"extralarge\"\n" +
-            "                                },\n" +
-            "                                {\n" +
-            "                                    \"#text\": \"http://userserve-ak.last.fm/serve/500/98508579/Sonic+Syndicate++2014.jpg\",\n" +
-            "                                    \"size\": \"mega\"\n" +
-            "                                }\n" +
-            "                            ]\n" +
-            "                        },\n" +
-            "                        {\n" +
-            "                            \"name\": \"Trivium\",\n" +
-            "                            \"mbid\": \"1f5ff245-2837-4d4a-a609-e93e544478c3\",\n" +
-            "                            \"url\": \"http://www.last.fm/music/Trivium\",\n" +
-            "                            \"streamable\": \"0\",\n" +
-            "                            \"image\": [\n" +
-            "                                {\n" +
-            "                                    \"#text\": \"http://userserve-ak.last.fm/serve/34/38425215.png\",\n" +
-            "                                    \"size\": \"small\"\n" +
-            "                                },\n" +
-            "                                {\n" +
-            "                                    \"#text\": \"http://userserve-ak.last.fm/serve/64/38425215.png\",\n" +
-            "                                    \"size\": \"medium\"\n" +
-            "                                },\n" +
-            "                                {\n" +
-            "                                    \"#text\": \"http://userserve-ak.last.fm/serve/126/38425215.png\",\n" +
-            "                                    \"size\": \"large\"\n" +
-            "                                },\n" +
-            "                                {\n" +
-            "                                    \"#text\": \"http://userserve-ak.last.fm/serve/252/38425215.png\",\n" +
-            "                                    \"size\": \"extralarge\"\n" +
-            "                                },\n" +
-            "                                {\n" +
-            "                                    \"#text\": \"http://userserve-ak.last.fm/serve/500/38425215/Trivium+PNG.png\",\n" +
-            "                                    \"size\": \"mega\"\n" +
-            "                                }\n" +
-            "                            ]\n" +
-            "                        }\n" +
-            "                    ]\n" +
-            "                }\n" +
-            "            },\n" +
-            "            {\n" +
-            "                \"name\": \"Amaranthe\",\n" +
-            "                \"mbid\": \"eb380962-99bb-46c0-af40-1c7790a7822a\",\n" +
-            "                \"url\": \"http://www.last.fm/music/Amaranthe\",\n" +
-            "                \"streamable\": \"0\",\n" +
-            "                \"image\": [\n" +
-            "                    {\n" +
-            "                        \"#text\": \"http://userserve-ak.last.fm/serve/34/62583953.png\",\n" +
-            "                        \"size\": \"small\"\n" +
-            "                    },\n" +
-            "                    {\n" +
-            "                        \"#text\": \"http://userserve-ak.last.fm/serve/64/62583953.png\",\n" +
-            "                        \"size\": \"medium\"\n" +
-            "                    },\n" +
-            "                    {\n" +
-            "                        \"#text\": \"http://userserve-ak.last.fm/serve/126/62583953.png\",\n" +
-            "                        \"size\": \"large\"\n" +
-            "                    },\n" +
-            "                    {\n" +
-            "                        \"#text\": \"http://userserve-ak.last.fm/serve/252/62583953.png\",\n" +
-            "                        \"size\": \"extralarge\"\n" +
-            "                    },\n" +
-            "                    {\n" +
-            "                        \"#text\": \"http://userserve-ak.last.fm/serve/500/62583953/Amaranthe+PNG.png\",\n" +
-            "                        \"size\": \"mega\"\n" +
-            "                    }\n" +
-            "                ],\n" +
-            "                \"context\": {\n" +
-            "                    \"artist\": [\n" +
-            "                        {\n" +
-            "                            \"name\": \"Sonic Syndicate\",\n" +
-            "                            \"mbid\": \"10a402b7-0e50-4479-b007-9cfdd5eaa287\",\n" +
-            "                            \"url\": \"http://www.last.fm/music/Sonic+Syndicate\",\n" +
-            "                            \"streamable\": \"0\",\n" +
-            "                            \"image\": [\n" +
-            "                                {\n" +
-            "                                    \"#text\": \"http://userserve-ak.last.fm/serve/34/98508579.jpg\",\n" +
-            "                                    \"size\": \"small\"\n" +
-            "                                },\n" +
-            "                                {\n" +
-            "                                    \"#text\": \"http://userserve-ak.last.fm/serve/64/98508579.jpg\",\n" +
-            "                                    \"size\": \"medium\"\n" +
-            "                                },\n" +
-            "                                {\n" +
-            "                                    \"#text\": \"http://userserve-ak.last.fm/serve/126/98508579.jpg\",\n" +
-            "                                    \"size\": \"large\"\n" +
-            "                                },\n" +
-            "                                {\n" +
-            "                                    \"#text\": \"http://userserve-ak.last.fm/serve/252/98508579.jpg\",\n" +
-            "                                    \"size\": \"extralarge\"\n" +
-            "                                },\n" +
-            "                                {\n" +
-            "                                    \"#text\": \"http://userserve-ak.last.fm/serve/500/98508579/Sonic+Syndicate++2014.jpg\",\n" +
-            "                                    \"size\": \"mega\"\n" +
-            "                                }\n" +
-            "                            ]\n" +
-            "                        },\n" +
-            "                        {\n" +
-            "                            \"name\": \"Within Temptation\",\n" +
-            "                            \"mbid\": \"eace2373-31c8-4aba-9a5c-7bce22dd140a\",\n" +
-            "                            \"url\": \"http://www.last.fm/music/Within+Temptation\",\n" +
-            "                            \"streamable\": \"0\",\n" +
-            "                            \"image\": [\n" +
-            "                                {\n" +
-            "                                    \"#text\": \"http://userserve-ak.last.fm/serve/34/45505139.png\",\n" +
-            "                                    \"size\": \"small\"\n" +
-            "                                },\n" +
-            "                                {\n" +
-            "                                    \"#text\": \"http://userserve-ak.last.fm/serve/64/45505139.png\",\n" +
-            "                                    \"size\": \"medium\"\n" +
-            "                                },\n" +
-            "                                {\n" +
-            "                                    \"#text\": \"http://userserve-ak.last.fm/serve/126/45505139.png\",\n" +
-            "                                    \"size\": \"large\"\n" +
-            "                                },\n" +
-            "                                {\n" +
-            "                                    \"#text\": \"http://userserve-ak.last.fm/serve/252/45505139.png\",\n" +
-            "                                    \"size\": \"extralarge\"\n" +
-            "                                },\n" +
-            "                                {\n" +
-            "                                    \"#text\": \"http://userserve-ak.last.fm/serve/500/45505139/Within+Temptation++900x900+PNG.png\",\n" +
-            "                                    \"size\": \"mega\"\n" +
-            "                                }\n" +
-            "                            ]\n" +
-            "                        }\n" +
-            "                    ]\n" +
-            "                }\n" +
-            "            },\n" +
-            "            {\n" +
-            "                \"name\": \"Fort Minor\",\n" +
-            "                \"mbid\": \"e1564e98-978b-4947-8698-f6fd6f8b0181\",\n" +
-            "                \"url\": \"http://www.last.fm/music/Fort+Minor\",\n" +
-            "                \"streamable\": \"0\",\n" +
-            "                \"image\": [\n" +
-            "                    {\n" +
-            "                        \"#text\": \"http://userserve-ak.last.fm/serve/34/156004.jpg\",\n" +
-            "                        \"size\": \"small\"\n" +
-            "                    },\n" +
-            "                    {\n" +
-            "                        \"#text\": \"http://userserve-ak.last.fm/serve/64/156004.jpg\",\n" +
-            "                        \"size\": \"medium\"\n" +
-            "                    },\n" +
-            "                    {\n" +
-            "                        \"#text\": \"http://userserve-ak.last.fm/serve/126/156004.jpg\",\n" +
-            "                        \"size\": \"large\"\n" +
-            "                    },\n" +
-            "                    {\n" +
-            "                        \"#text\": \"http://userserve-ak.last.fm/serve/252/156004.jpg\",\n" +
-            "                        \"size\": \"extralarge\"\n" +
-            "                    },\n" +
-            "                    {\n" +
-            "                        \"#text\": \"http://userserve-ak.last.fm/serve/500/156004/Fort+Minor.jpg\",\n" +
-            "                        \"size\": \"mega\"\n" +
-            "                    }\n" +
-            "                ],\n" +
-            "                \"context\": {\n" +
-            "                    \"artist\": [\n" +
-            "                        {\n" +
-            "                            \"name\": \"Linkin Park\",\n" +
-            "                            \"mbid\": \"f59c5520-5f46-4d2c-b2c4-822eabf53419\",\n" +
-            "                            \"url\": \"http://www.last.fm/music/Linkin+Park\",\n" +
-            "                            \"streamable\": \"0\",\n" +
-            "                            \"image\": [\n" +
-            "                                {\n" +
-            "                                    \"#text\": \"http://userserve-ak.last.fm/serve/34/7591.jpg\",\n" +
-            "                                    \"size\": \"small\"\n" +
-            "                                },\n" +
-            "                                {\n" +
-            "                                    \"#text\": \"http://userserve-ak.last.fm/serve/64/7591.jpg\",\n" +
-            "                                    \"size\": \"medium\"\n" +
-            "                                },\n" +
-            "                                {\n" +
-            "                                    \"#text\": \"http://userserve-ak.last.fm/serve/126/7591.jpg\",\n" +
-            "                                    \"size\": \"large\"\n" +
-            "                                },\n" +
-            "                                {\n" +
-            "                                    \"#text\": \"http://userserve-ak.last.fm/serve/252/7591.jpg\",\n" +
-            "                                    \"size\": \"extralarge\"\n" +
-            "                                },\n" +
-            "                                {\n" +
-            "                                    \"#text\": \"http://userserve-ak.last.fm/serve/500/7591/Linkin+Park.jpg\",\n" +
-            "                                    \"size\": \"mega\"\n" +
-            "                                }\n" +
-            "                            ]\n" +
-            "                        },\n" +
-            "                        {\n" +
-            "                            \"name\": \"Hollywood Undead\",\n" +
-            "                            \"mbid\": \"321fdfbb-426b-43f7-8295-fa9aca6348d9\",\n" +
-            "                            \"url\": \"http://www.last.fm/music/Hollywood+Undead\",\n" +
-            "                            \"streamable\": \"0\",\n" +
-            "                            \"image\": [\n" +
-            "                                {\n" +
-            "                                    \"#text\": \"http://userserve-ak.last.fm/serve/34/58156137.jpg\",\n" +
-            "                                    \"size\": \"small\"\n" +
-            "                                },\n" +
-            "                                {\n" +
-            "                                    \"#text\": \"http://userserve-ak.last.fm/serve/64/58156137.jpg\",\n" +
-            "                                    \"size\": \"medium\"\n" +
-            "                                },\n" +
-            "                                {\n" +
-            "                                    \"#text\": \"http://userserve-ak.last.fm/serve/126/58156137.jpg\",\n" +
-            "                                    \"size\": \"large\"\n" +
-            "                                },\n" +
-            "                                {\n" +
-            "                                    \"#text\": \"http://userserve-ak.last.fm/serve/252/58156137.jpg\",\n" +
-            "                                    \"size\": \"extralarge\"\n" +
-            "                                },\n" +
-            "                                {\n" +
-            "                                    \"#text\": \"http://userserve-ak.last.fm/serve/500/58156137/Hollywood+Undead+HUATPROMO3.jpg\",\n" +
-            "                                    \"size\": \"mega\"\n" +
-            "                                }\n" +
-            "                            ]\n" +
-            "                        }\n" +
-            "                    ]\n" +
             "                }\n" +
             "            }\n" +
             "        ],\n" +
@@ -468,7 +441,9 @@ public class GSONRecommendedArtistsTest {
 
     @Test
     public void test() {
-        Gson gson = new Gson();
+        final GsonBuilder gsonBuilder = new GsonBuilder();
+        gsonBuilder.registerTypeAdapter(RecommendedArtists.class, new RecommendedArtistsDeserializer());
+        Gson gson = gsonBuilder.create();
         RecommendedArtists recommendedArtists = gson.fromJson(jsonString, RecommendedArtists.class);
         assertNotNull(recommendedArtists.getRecommendations().getArtist());
     }

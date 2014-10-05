@@ -146,29 +146,6 @@ public class UserData {
             this.type = type;
         }
 
-
-        public static final class Image {
-            @SerializedName("#text")
-            private String text;
-            private String size;
-
-            public String getText() {
-                return text;
-            }
-
-            public void setText(String text) {
-                this.text = text;
-            }
-
-            public String getSize() {
-                return size;
-            }
-
-            public void setSize(String size) {
-                this.size = size;
-            }
-        }
-
         public static final class RegisterDate {
             @SerializedName("#text")
             private String text;

@@ -99,13 +99,23 @@ public class RecommendedArtists {
     }
 
     public static final class Context {
-        private List<Artist> artist;
+        @SerializedName("artist")
+        private List<Artist> artists;
+        private Artist artist;
 
-        public List<Artist> getArtist() {
+        public List<Artist> getArtists() {
+            return artists;
+        }
+
+        public void setArtists(List<Artist> artists) {
+            this.artists = artists;
+        }
+
+        public Artist getArtist() {
             return artist;
         }
 
-        public void setArtist(List<Artist> artist) {
+        public void setArtist(Artist artist) {
             this.artist = artist;
         }
     }
@@ -155,28 +165,6 @@ public class RecommendedArtists {
 
         public void setImage(List<Image> image) {
             this.image = image;
-        }
-    }
-
-    public static final class Image {
-        @SerializedName("#text")
-        private String text;
-        private String size;
-
-        public String getText() {
-            return text;
-        }
-
-        public void setText(String text) {
-            this.text = text;
-        }
-
-        public String getSize() {
-            return size;
-        }
-
-        public void setSize(String size) {
-            this.size = size;
         }
     }
 

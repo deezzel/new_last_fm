@@ -3,11 +3,13 @@ package com.newlastfm.app.rest;
 import android.util.Log;
 
 import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
 import com.newlastfm.app.Constants;
 import com.newlastfm.model.RecommendedArtists;
 import com.newlastfm.model.RequestError;
 import com.newlastfm.model.SessionData;
 import com.newlastfm.model.UserData;
+import com.newlastfm.model.gson.RecommendedArtistsDeserializer;
 import com.newlastfm.model.params.RecommendedArtistsParams;
 
 import org.androidannotations.annotations.AfterInject;
@@ -134,16 +136,19 @@ public class ServerAPIFacade {
             int responseCode = urlConnection.getResponseCode();
             if (responseCode == 200) {
                 BufferedReader br = new BufferedReader(new InputStreamReader(urlConnection.getInputStream()));
-                StringBuilder sb = new StringBuilder();
-                String line;
-                while ((line = br.readLine()) != null) {
-                    sb.append(line + "\n");
-                }
-                br.close();
-                jsonResponse = sb.toString();
+                GsonBuilder gsonBuilder = new GsonBuilder();
+                gsonBuilder.registerTypeAdapter(RecommendedArtists.class, new RecommendedArtistsDeserializer());
+                Gson gson = gsonBuilder.create();
+                recommendedArtists = gson.fromJson(br.readLine(), RecommendedArtists.class);
+//                StringBuilder sb = new StringBuilder();
+//                String line;
+//                while ((line = br.readLine()) != null) {
+//                    sb.append(line + "\n");
+//                }
+//                br.close();
+//                jsonResponse = sb.toString();
             }
-            Gson gson = new Gson();
-            recommendedArtists = gson.fromJson(jsonResponse, RecommendedArtists.class);
+
         } catch (MalformedURLException e) {
             e.printStackTrace();
         } catch (ProtocolException e) {

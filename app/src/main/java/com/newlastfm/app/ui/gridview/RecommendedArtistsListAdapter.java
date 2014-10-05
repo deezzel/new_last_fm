@@ -84,16 +84,16 @@ public class RecommendedArtistsListAdapter extends ArrayAdapter<ParentArtist> {
             imageLoader.displayImage(artist.getImage().get(3).getText(), imageCover);
             artistName.setText(artist.getName());
             String similar = "Similar with ";
-            for (int i = 0; i < artist.getContext().getArtist().size(); i++) {
-                RecommendedArtists.Artist a = artist.getContext().getArtist().get(i);
+            for (int i = 0; i < artist.getContext().getArtists().size(); i++) {
+                RecommendedArtists.Artist a = artist.getContext().getArtists().get(i);
                 similar = similar + a.getName();
-                if (i < artist.getContext().getArtist().size() - 1) {
+                if (i < artist.getContext().getArtists().size() - 1) {
                     similar = similar + " and ";
                 }
             }
             similarArtists.setText(similar);
-            imageLoader.displayImage(artist.getContext().getArtist().get(0).getImage().get(2).getText(), similarArtistCover1);
-            imageLoader.displayImage(artist.getContext().getArtist().get(1).getImage().get(2).getText(), similarArtistCover2);
+            imageLoader.displayImage(artist.getContext().getArtists().get(0).getImage().get(2).getText(), similarArtistCover1);
+            imageLoader.displayImage(artist.getContext().getArtists().get(1).getImage().get(2).getText(), similarArtistCover2);
         }
     }
 }
