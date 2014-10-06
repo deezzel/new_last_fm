@@ -1,5 +1,6 @@
 package com.newlastfm.app;
 
+import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Canvas;
@@ -8,6 +9,10 @@ import android.graphics.Paint;
 import android.graphics.PorterDuff;
 import android.graphics.PorterDuffXfermode;
 import android.graphics.Rect;
+
+import com.nostra13.universalimageloader.core.DisplayImageOptions;
+import com.nostra13.universalimageloader.core.ImageLoader;
+import com.nostra13.universalimageloader.core.ImageLoaderConfiguration;
 
 import java.io.UnsupportedEncodingException;
 import java.net.URL;
@@ -105,5 +110,19 @@ public class Utils {
         canvas.drawBitmap(sbmp, rect, rect, paint);
 
         return output;
+    }
+
+    public static ImageLoader initImageLoader(Context context, ImageLoader imageLoader) {
+        DisplayImageOptions displayDefaultImageOptions = new DisplayImageOptions.Builder()
+                .cacheInMemory(false)
+                .cacheOnDisk(true)
+                .build();
+        ImageLoaderConfiguration imageLoaderConfiguration = new ImageLoaderConfiguration.Builder(context)
+                .diskCacheSize(50 * 1024 * 1024) //50Mb
+                .defaultDisplayImageOptions(displayDefaultImageOptions)
+                .build();
+        imageLoader = ImageLoader.getInstance();
+        imageLoader.init(imageLoaderConfiguration);
+        return imageLoader;
     }
 }
