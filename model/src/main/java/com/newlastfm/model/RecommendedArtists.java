@@ -120,54 +120,6 @@ public class RecommendedArtists {
         }
     }
 
-    public static final class Artist {
-        private String name;
-        private String mbid;
-        private String url;
-        private int streamable;
-        private List<Image> image;
-
-        public String getName() {
-            return name;
-        }
-
-        public void setName(String name) {
-            this.name = name;
-        }
-
-        public String getMbid() {
-            return mbid;
-        }
-
-        public void setMbid(String mbid) {
-            this.mbid = mbid;
-        }
-
-        public String getUrl() {
-            return url;
-        }
-
-        public void setUrl(String url) {
-            this.url = url;
-        }
-
-        public int getStreamable() {
-            return streamable;
-        }
-
-        public void setStreamable(int streamable) {
-            this.streamable = streamable;
-        }
-
-        public List<Image> getImage() {
-            return image;
-        }
-
-        public void setImage(List<Image> image) {
-            this.image = image;
-        }
-    }
-
     public static final class Attributes {
         private String user;
         private int page;

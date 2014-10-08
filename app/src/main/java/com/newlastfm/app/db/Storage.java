@@ -1,7 +1,9 @@
 package com.newlastfm.app.db;
 
 import com.newlastfm.app.ExceptionHandler;
+import com.newlastfm.model.Artist;
 import com.newlastfm.model.User;
+import com.newlastfm.model.dao.ArtistDAO;
 import com.newlastfm.model.dao.UserDAO;
 
 import org.androidannotations.annotations.EBean;
@@ -14,9 +16,11 @@ import java.sql.SQLException;
 @EBean(scope = EBean.Scope.Singleton)
 public class Storage {
     private UserDAO userDAO;
+    private ArtistDAO artistDAO;
 
     public void init(DatabaseHelper databaseHelper) {
         userDAO = databaseHelper.userDAO;
+        artistDAO = databaseHelper.artistDAO;
     }
 
     public User getUser() {
@@ -35,5 +39,18 @@ public class Storage {
 
     public void delete(User user) {
         userDAO.delete(user);
+    }
+
+    public Artist create(Artist artist) {
+        artistDAO.create(artist);
+        return artist;
+    }
+
+    public Artist getByMBID(String mbid) {
+        return artistDAO.getByMBID(mbid);
+    }
+
+    public Artist getById(int id) {
+        return artistDAO.getById(id);
     }
 }

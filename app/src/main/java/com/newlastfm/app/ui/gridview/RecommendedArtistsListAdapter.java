@@ -11,7 +11,7 @@ import android.widget.TextView;
 
 import com.newlastfm.app.R;
 import com.newlastfm.app.ui.widget.RoundedImageView;
-import com.newlastfm.model.RecommendedArtists;
+import com.newlastfm.model.Artist;
 import com.newlastfm.model.RecommendedArtists.ParentArtist;
 import com.nostra13.universalimageloader.core.DisplayImageOptions;
 import com.nostra13.universalimageloader.core.ImageLoader;
@@ -87,7 +87,7 @@ public class RecommendedArtistsListAdapter extends ArrayAdapter<ParentArtist> {
             artistName.setText(artist.getName());
             String similar = "Similar with ";
             for (int i = 0; i < artist.getContext().getArtists().size(); i++) {
-                RecommendedArtists.Artist a = artist.getContext().getArtists().get(i);
+                Artist a = artist.getContext().getArtists().get(i);
                 similar = similar + a.getName();
                 if (i < artist.getContext().getArtists().size() - 1) {
                     similar = similar + " and ";

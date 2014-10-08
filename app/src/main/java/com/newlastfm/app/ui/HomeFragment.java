@@ -16,6 +16,7 @@ import com.newlastfm.app.R;
 import com.newlastfm.app.Utils;
 import com.newlastfm.app.ui.gridview.RecommendedArtistsListAdapter;
 import com.newlastfm.app.ui.widget.RoundedImageView;
+import com.newlastfm.model.Artist;
 import com.newlastfm.model.RecommendedArtists;
 import com.nostra13.universalimageloader.core.ImageLoader;
 
@@ -61,16 +62,47 @@ public class HomeFragment extends Fragment {
     @Background
     void getRecommendedArtists() {
         apiSigRecommendedArtists = Utils.buildApiSig(Constants.apiKey, "user.getRecommendedArtists",
-                ctx.storage.getUser().sk, Constants.secret, "1", "50");
+                ctx.storage.getUser().sk, Constants.secret, "1", "10");
         String params = "api_sig=" + apiSigRecommendedArtists + "&api_key=" + Constants.apiKey + "&method=user.getRecommendedArtists" +
-                "&sk=" + ctx.storage.getUser().sk + "&page=1&limit=50" + "&format=json";
+                "&sk=" + ctx.storage.getUser().sk + "&page=1&limit=10" + "&format=json";
         recommendedArtists = ctx.api.getRecommendedArtists(params);
+
         initViews();
+    }
+
+    @Background
+    void storeArtists(List<RecommendedArtists.ParentArtist> parentArtistList) {
+        for (RecommendedArtists.ParentArtist artist : parentArtistList) {
+            if (ctx.storage.getByMBID(artist.getMbid()) == null) {
+                Artist dbArtist = Artist.newInstance(artist.getName(), artist.getMbid(), artist.getUrl(),
+                        artist.getStreamable(), artist.getImage().get(3).getText());
+                ctx.storage.create(dbArtist);
+            }
+            if (artist.getContext().getArtists() != null) {
+                for (Artist similarArtist : artist.getContext().getArtists()) {
+                    if (ctx.storage.getByMBID(similarArtist.getMbid()) == null) {
+                        Artist dbSimilarArtist = Artist.newInstance(similarArtist.getName(), similarArtist.getMbid(),
+                                similarArtist.getUrl(), similarArtist.getStreamable(),
+                                similarArtist.getImage().get(3).getText());
+                        ctx.storage.create(dbSimilarArtist);
+                    }
+                }
+            } else {
+                Artist similarArtist = artist.getContext().getArtist();
+                if (ctx.storage.getByMBID(similarArtist.getMbid()) == null) {
+                    Artist dbSimilarArtist = Artist.newInstance(similarArtist.getName(), similarArtist.getMbid(),
+                            similarArtist.getUrl(), similarArtist.getStreamable(),
+                            similarArtist.getImage().get(3).getText());
+                    ctx.storage.create(dbSimilarArtist);
+                }
+            }
+        }
     }
 
     @UiThread
     void initViews() {
         List<RecommendedArtists.ParentArtist> parentArtists = recommendedArtists.getRecommendations().getArtist();
+        storeArtists(parentArtists);
         Collections.shuffle(parentArtists);
         for (int i = 0; i < 4; i++) {
             artists.add(parentArtists.get(i));
@@ -113,7 +145,7 @@ public class HomeFragment extends Fragment {
         artistName.setText(artist.getName());
         String similar = "Similar with ";
         for (int i = 0; i < artist.getContext().getArtists().size(); i++) {
-            RecommendedArtists.Artist a = artist.getContext().getArtists().get(i);
+            Artist a = artist.getContext().getArtists().get(i);
             similar = similar + a.getName();
             if (i < artist.getContext().getArtists().size() - 1) {
                 similar = similar + " and ";

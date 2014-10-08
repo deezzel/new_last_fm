@@ -6,6 +6,7 @@ import com.google.gson.JsonDeserializer;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParseException;
+import com.newlastfm.model.Artist;
 import com.newlastfm.model.Image;
 import com.newlastfm.model.RecommendedArtists;
 
@@ -43,12 +44,12 @@ public class RecommendedArtistsDeserializer implements JsonDeserializer<Recommen
             JsonObject context = parent.get("context").getAsJsonObject();
             JsonElement artist = context.get("artist");
             if (artist.isJsonArray()) {
-                RecommendedArtists.Artist[] artists = deserializationContext.deserialize(artist,
-                        RecommendedArtists.Artist[].class);
+                Artist[] artists = deserializationContext.deserialize(artist,
+                        Artist[].class);
                 artists_context.setArtists(Arrays.asList(artists));
             } else if (artist.isJsonObject()) {
-                RecommendedArtists.Artist derived_artist = deserializationContext.deserialize(artist,
-                        RecommendedArtists.Artist.class);
+                Artist derived_artist = deserializationContext.deserialize(artist,
+                        Artist.class);
                 artists_context.setArtist(derived_artist);
             }
             artistParent.setContext(artists_context);
